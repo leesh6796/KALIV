@@ -14,20 +14,88 @@
             <h1>KALIV Sign Up</h1>
         </div>
 
-        <form>
-            <input placeholder="new Id" type="text" id="username" name="username">
+        <form id="submitForm" method="POST" action="/signup/req" onsubmit="return requestSignUp()">
+            <input placeholder="new username (id)" type="text" id="username" name="username" onkeydown="clearOverlap()" onchange="clearOverlap()">
+            <input placeholder="e-mail" type="text" id="email" name="email" onkeydown="clearOverlap()" onchange="clearOverlap()">
+            <button type="button" onclick="checkOverlap();">Check validation</button>
 
-            <input placeholder="e-mail" type="text" id="email" name="email">
+            <!--<button type="button">Check e-mail validation</button>-->
 
-            <button type="button">Check e-mail validation</button>
+            <input placeholder="new password" type="password" id="password" name="password">
+            <input placeholder="confirm your password" type="password" id="c_password" name="c_password">
 
-            <input placeholder="new pwd" type="password" id="password" name="password">
+            <input type="hidden" id="overlap" value="" />
 
             <div id="lower">
                 <input type="submit" value="Sign up">
             </div>
         </form>
     </div>
+
+    <script src="/js/jquery.js"></script>
+    <script src="/js/sha512.js"></script>
+
+    <script>
+        function clearOverlap()
+        {
+            $('#overlap').val('');
+        }
+
+        function checkEmailForm(email)
+        {
+            if(typeof email !== 'string') return false;
+
+            at = email.indexOf('@');
+            if(at < 1) return false; // @.com 이런거 안된다.
+            if(at === email.length - 1) return false; // test@ 이런거 안된다.
+
+            host = email.substring(at + 1, email.length);
+            if(host !== 'kaist.ac.kr') return false; // kaist email만 된다.
+
+            return true;
+        }
+
+        function checkOverlap()
+        {
+            let username = $('#username').val();
+            let email = $('#email').val();
+
+            if(username !== "" && email !== "" && checkEmailForm(email))
+            {
+                $.get("/signup/check/" + username + "/" + email, function(res) {
+                    // res.res === "overlap" 겹친다. success면 안겹친다.
+                    if(res.result === "success")
+                    {
+                        $('#overlap').val("success");
+                    }
+                });
+            }
+        }
+
+        function requestSignUp()
+        {
+            let password = $('#password').val();
+            let c_password = $('#c_password').val();
+            let overlap = $('#overlap').val();
+
+            if(password !== c_password)
+            {
+                alert('패스워드 확인이 일치하지 않습니다.');
+                return false;
+            }
+            else if(overlap !== 'success')
+            {
+                alert('아이디, 이메일 중복을 확인해주세요.');
+                return false;
+            }
+
+            $('#password').val(sha512(password)); // client -> server 보낼 때 SSL 사용하지 못하므로, SHA-512로 해싱해서 보낸다.
+            $('#c_password').val('');
+            
+            return true;
+        }
+
+    </script>
 
 </body>
 
