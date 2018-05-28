@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link type="text/css" rel="stylesheet" href="css/normal_chat.css">
+
+  <script>
+    let test_type = 0;
+
+    function addmsg(type, name, time, msg) {
+      let ocontainer = document.getElementById("Layout2");
+      let ocontainer_msg = ocontainer.getElementsByClassName("msg")[0];
+      let onewmsg = document.createElement("div");
+      let onewblank = document.createElement("div");
+
+      if (type) {
+        onewmsg.className = "othertalk";
+        onewmsg.innerHTML =
+          "<div class=\"profile_image\" style=\"background: url(img/profile_image.png) no-repeat;\">\n" +
+          "</div>\n" +
+          "<div class=\"box\">\n" +
+          "<div class=\"profile_name\">\n" +
+          name + "\n" +
+          "</div>\n" +
+          "<div class=\"a\">\n" +
+          "</div>\n" +
+          "<div class=\"b\">\n" +
+          msg + "\n" +
+          "</div>\n" +
+          "<div class=\"time\">\n" +
+          time + "\n" +
+          "</div>\n" +
+          "</div>\n";
+      } else {
+        onewmsg.className = "mytalk";
+        onewmsg.innerHTML =
+          "<div class=\"b\">\n" +
+          "</div>\n" +
+          "<div class=\"a\">\n" +
+          msg + "\n" +
+          "</div>\n" +
+          "<div class=\"time\">\n" +
+          time + "\n" +
+          "</div>\n" +
+          "";
+      }
+      onewmsg.innerHTML += "<div class=\"clear\">\n" + "</div>";
+      onewblank.className = "blank";
+      ocontainer_msg.appendChild(onewmsg);
+      ocontainer_msg.appendChild(onewblank);
+      ocontainer_msg.scrollTop = ocontainer_msg.scrollHeight;
+    }
+
+    function testfunc() {
+      let otxtmsg = document.getElementById("testmsg");
+      let d = new Date();
+      let ampm = (d.getHours() > 12 ? "PM" : "AM");
+      let h = (d.getHours() > 12 ? d.getHours() - 12 : d.getHours());
+      let m = d.getMinutes();
+
+      test_type ^= 0x01;
+      addmsg(test_type, "사용자1", ampm + " " + h + ":" + m, otxtmsg.value.replace("\n", "<br />\n"));
+
+    }
+  </script>
+</head>
+
+
+<body>
+  <div id='header'>
+    <h1>KALIV</h1>
+  </div>
+
+  <div id='Layout1'>
+
+  </div>
+
+  <div id='Layout2' style="height:480px;">
+    <div id='title'>
+      <h2>Title</h2></div>
+    <div class="msg">
+    </div>
+    <div class="sendmsg">
+      <textarea style="width: 98%;" class="textarea" id="testmsg" onkeypress="if(event.keyCode==13) {
+                    testfunc();
+                    this.value = '';
+                    return false; } else if(event.keyCode==10) {
+                        this.value+='\n';
+                    }">
+            </textarea>
+
+
+    </div>
+  </div>
+
+  <div id='Layout3'>
+
+  </div>
+
+</body>
+
+</html>

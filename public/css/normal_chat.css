@@ -1,0 +1,193 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+    color: #444;
+    background: white;
+}
+
+
+#header {
+    width: 100%;
+    height: 100px;
+    float: left;
+}
+
+#header h1 {
+    margin-left: 15px;
+}
+
+#Layout1 {
+    width:33.3%;
+    background-color:rgb(239, 239, 239);
+    height:540px;
+    float: left;
+    margin-top: 3px;
+}
+
+#Layout2 {
+    width:33.3%;
+    height:480px;
+    float: left;
+	padding: 4px 4px 0px 4px;
+
+}
+
+#Layout2 #title {
+    background-color: rgb(127, 127, 127);
+    width: 95%;
+    float: top;
+    height: 60px;
+    padding-top: 1px;
+}
+
+#Layout2 #title h2 {
+    font-size: 24px;
+    color: white;
+    margin-left: 20px;
+}
+
+#Layout3 {
+    background-color:rgb(239, 239, 239);
+    width: 30%;
+    height:540px;
+    float: left;
+    margin-top: 3px;
+
+}
+
+
+
+
+/* */
+
+
+#Layout2 .clear
+{
+	clear: both;
+}
+
+#Layout2 .blank
+{
+	clear: both;
+	height: 4px;
+}
+
+#Layout2 .msg
+{
+	height: calc(100% - 72px);
+	overflow-y: scroll;
+	
+	font-size: 12px;
+}
+
+#Layout2 .msg .time
+{
+	font-size: 10px;
+}
+
+#Layout2 .msg .mytalk
+{
+	float: right;
+	width: 100%;
+}
+
+#Layout2 .msg .mytalk .time
+{
+	float: right;
+	bottom: 0;
+}
+
+#Layout2 .msg .mytalk .a
+{
+	float: right;
+	position: relative;
+	min-height: 24px;
+	max-width: calc(100% - 64px);
+	left: 2px;
+	background-color: #ffec42;
+	border-radius: 3px;
+	z-index: 2;
+	padding: 0px 4px 0px 4px;
+	word-break: break-all;
+}
+
+#Layout2 .msg .mytalk .b
+{
+	float: right;
+	position: relative;
+	width: 8px;
+	height: 22px;
+	background: url(./chat_balloon_yellow.right.png) no-repeat;
+	z-index: 1;
+}
+
+#Layout2 .msg .othertalk
+{
+	float: left;
+	width: 100%;
+}
+
+#Layout2 .msg .othertalk .profile_image
+{
+	float: left;
+	width: 40px;
+	height: 40px;
+	border-radius: 14px; 
+}
+
+#Layout2 .msg .othertalk .box
+{
+	float: left;
+	width: calc(100% - 48px);
+}
+
+#Layout2 .msg .othertalk .box .profile_name
+{
+	font-size: 12px;
+}
+
+#Layout2 .msg .othertalk .box .a
+{
+	float: left;
+	position: relative;
+	width: 8px;
+	height: 22px;
+	background: url(./chat_balloon_white.left.png) no-repeat;
+	z-index: 1;
+}
+
+#Layout2 .msg .othertalk .box .b
+{
+	float: left;
+	position: relative;
+	min-height: 24px;
+	max-width: calc(100% - 64px);
+	left: -2px;
+	background-color: #ffffff;
+	border-radius: 3px;
+	z-index: 2;
+	padding: 0px 4px 0px 4px;
+	word-break: break-all;
+}
+
+#Layout2 .msg .othertalk .box .time
+{
+	float: left;
+}
+
+#Layout2 .sendmsg
+{
+	
+}
+
+#Layout2 .sendmsg .textarea
+{
+	float: left;
+	width: calc(100% - 68px);
+	height: 64px;
+	border-radius: 8px 8px 8px 8px;
+	margin: 0px 0px 0px 0px;
+	padding: 2px 2px 2px 2px;
+	resize: none;
+}

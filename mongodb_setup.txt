@@ -1,0 +1,4 @@
+use KALIV
+db.createCollection("users", { autoIndexId: true })
+db.createCollection("messages", { autoIndexId: true })
+db.createCollection("chatRooms", { autoIndexId: true })
