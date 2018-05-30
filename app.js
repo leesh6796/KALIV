@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
 var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var fs = require('fs');
@@ -22,7 +23,7 @@ app.use(session({
   saveUninitialized: true
 }));
 
-let dev = true;
+global.dev = true;
 let port = dev ? 10500 : 80;
 app.listen(port, function() {
         console.log('Connected at ' + port.toString());

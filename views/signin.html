@@ -4,18 +4,21 @@
 
 <head>
     <title><%= title %></title>
-    <link type="text/css" rel="stylesheet" href="css/signin.css">
+    <link type="text/css" rel="stylesheet" href="/css/signin.css">
 </head>
 
 <body>
 
     <div id="container">
         <div id="logo">
-            <img src="img/logo.jpg" width="100" height="80" alt="No image">
+            <img src="/img/logo.jpg" width="100" height="80" alt="No image">
             <h1>Welcome to KALIV</h1>
         </div>
 
-        <form>
+        <form method="POST" action="/signin/auth" onsubmit="makeHash()">
+            <% if(signInFail) { %>
+                <!-- here -->
+            <% } %>
             <input placeholder="user Id" type="text" id="username" name="username">
 
             <input placeholder="password" type="password" id="password" name="password">
@@ -26,6 +29,20 @@
             </div>
         </form>
     </div>
+
+    <script src="/js/jquery.js"></script>
+    <script src="/js/sha512.js"></script>
+
+    <script>
+        function makeHash()
+        {
+            let password = $('#password').val();
+            let hash = sha512(password);
+            $('#password').val(hash);
+
+            return true;
+        }
+    </script>
 
 </body>
 
