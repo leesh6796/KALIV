@@ -26,7 +26,7 @@ module.exports = {
 				return;
 			}
 
-			res.json({result:0});
+			res.render('email_verification.html');
 		});
 
 		var smtpTransport = nodemailer.createTransport(smtpPool({
@@ -93,14 +93,15 @@ module.exports = {
 			if(user.length > 0)
 			{
 				await user[0].verify();
-				res.send("KAIST Verification Complete");
+				res.render('email_verification_success.html');
+				//res.send("KAIST Verification Complete");
 			}
 			else
-				res.send("Verification Failure");
+				res.render('email_verification_failure.html');
 		}
 		catch(err)
 		{
-			res.send("Verification Failure");
+			res.render('email_verification_failure.html');
 		}
 	},
 };
