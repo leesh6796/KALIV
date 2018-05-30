@@ -27,4 +27,11 @@ module.exports = {
     	else
     		res.render('signup.html', {title : 'KALIV Sign Up'});
     },
+    getDevChat : function(req, res)
+    {
+    	if(req.session.signin)
+        	res.render('devchat.html');
+        else
+        	res.redirect('/signin');
+    }
 };

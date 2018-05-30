@@ -48,7 +48,7 @@ module.exports = {
 		    maxMessages:10*/
 		}) );
 
-		let url = dev ? "http://localhost:10500/signup/verify/" + token : "";
+		let url = global.dev ? "http://localhost:10500/signup/verify/" + token : "";
 		var mailOptions = {
 		    from: 'KALIV <kaliv.kaist@gmail.com>',
 		    to: email,

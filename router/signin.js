@@ -10,6 +10,7 @@ module.exports = {
 		if(result)
 		{
 			req.session.signin = true;
+			req.session.username = username;
 			res.redirect('/');
 		}
 		else
