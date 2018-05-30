@@ -33,5 +33,19 @@ module.exports = {
         	res.render('devchat.html', {username: req.session.username});
         else
         	res.redirect('/signin');
-    }
+    },
+    getChat : function(req, res)
+    {
+    	if(req.session.signin)
+        	res.render('chat.html', {username: req.session.username});
+        else
+        	res.redirect('/signin');
+    },
+    getCalendar : function(req, res)
+    {
+    	if(req.session.signin)
+        	res.render('calendar.html', {username: req.session.username});
+        else
+        	res.redirect('/signin');
+    },
 };

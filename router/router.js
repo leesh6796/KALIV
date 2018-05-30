@@ -13,6 +13,8 @@ router.route('/signin').get(redirector.getSignIn);
 router.route('/signup').get(redirector.getSignUp);
 router.route('/logout').get(signin.getLogout);
 router.route('/devchat').get(redirector.getDevChat);
+router.route('/chat').get(redirector.getChat);
+router.route('/calendar').get(redirector.getCalendar);
 
 router.route('/signup/req').post(signup.postSignUp);
 router.route('/signup/check/:username/:email').get(signup.getCheckOverlap);

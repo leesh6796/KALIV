@@ -88,10 +88,15 @@ module.exports = {
 		try
 		{
 			let token = req.params.token.toString();
-			let user = await User.findOne({verifyToken: token});
-			await user.verify();
+			let user = await User.find({verifyToken: token});
 
-			res.send("KAIST Verification Complete");
+			if(user.length > 0)
+			{
+				await user[0].verify();
+				res.send("KAIST Verification Complete");
+			}
+			else
+				res.send("Verification Failure");
 		}
 		catch(err)
 		{

@@ -5,6 +5,7 @@ var userSchema = new Schema({
     username: {type: String, unique: true},
     password: String,
     email: {type: String, unique: true},
+    nickname: {type: String, unique: true},
     verifyToken: String,
     kaistVerification: {type: Boolean, default: false},
     signupDate: { type: Date, default: Date.now },
