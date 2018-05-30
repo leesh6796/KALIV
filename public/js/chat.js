@@ -49,24 +49,25 @@ function insertChat(who, text, time){
     var date = formatAMPM(new Date());
     
     if (who == "me"){
-        control = '<li >' +
+        control = '<li class="right clearfix">' +
                         '<div class="msj macro">' +
-                        '<div class="avatar chat-img1 pull-left"><img class="img-circle" src="'+ me.avatar +'" /></div>' +
-                            '<div class="text text-l">' +
+                        '<span class="avatar  chat-img1 pull-right"><img class="img-circle" style="height: 34px; width: 34px;" src="'+ me.avatar +'" /></div>' +
+                            '<div class="text text-r pull-right">' +
                                 '<p>'+ text +'</p>' +
                                 '<p><small>'+date+'</small></p>' +
                             '</div>' +
                         '</div>' +
                     '</li>';                    
     }else{
-        control = '<li >' +
-                        '<div class="msj-rta macro">' +
-                            '<div class="text text-r">' +
-                                '<p>'+text+'</p>' +
+        control = '<li class="left clearfix">' +
+                        '<div class="msj macro">' +
+                        '<span class="avatar  chat-img1 pull-left"><img class="img-circle" style="height: 34px; width: 34px;" src="'+ me.avatar +'" /></div>' +
+                            '<div class="text text-l">' +
+                                '<p>'+ text +'</p>' +
                                 '<p><small>'+date+'</small></p>' +
                             '</div>' +
-                        '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="height: 34px; width: 34px;"src="'+you.avatar+'" /></div>' +                                
-                  '</li>';
+                        '</div>' +
+                    '</li>';
     }
     setTimeout(
         function(){                        
@@ -95,6 +96,15 @@ $('body > div > div > div:nth-child(2) > span').click(function(){
 
 //-- Clear Chat
 resetChat();
+
+function myfunction()
+{
+
+    var inserttext = document.getElementById('mytext').value;
+    console.log(inserttext);
+    insertChat("me",inserttext,0);
+    document.getElementById('mytext').value="";
+}
 
 /* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
 function openNav() {
