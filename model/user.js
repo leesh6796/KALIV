@@ -53,7 +53,7 @@ userSchema.statics = {
         {
             console.error(err);
         }
-    }
+    },
 };
 
-module.exports = db.model('user', userSchema); // first parameter는 schema name. schema name의 복수형을 collection name으로 사용한다.
+module.exports = global.db.model('user', userSchema); // first parameter는 schema name. schema name의 복수형을 collection name으로 사용한다.

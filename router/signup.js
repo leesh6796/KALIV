@@ -61,13 +61,12 @@ module.exports = {
 		    if (error){
 		        console.log(error);
 		    } else {
-		        console.log("Message sent : " + response.message);
 		    }
 		    smtpTransport.close();
 		});
 	},
 
-	getCheckOverlap : async function(req, res)
+	getCheckOverlap : async function(req, res) // username, email 중복 확인
 	{
 		let username = req.params.username.toString();
 		let email = req.params.email.toString();
@@ -84,7 +83,7 @@ module.exports = {
 		}
 	},
 
-	getVerify : async function(req, res)
+	getVerify : async function(req, res) // 메일로 보내진 링크에 접속했을 때 인증을 처리하는 method
 	{
 		try
 		{

@@ -23,8 +23,13 @@
     <script src="/js/socket.io.js"></script>
     <script>
       var socket = io();
+      var username = '<%= username %>';
+
+      socket.emit('join', {roomID: 1, username: username});
+
       $('#chatform').submit(function() {
-        socket.emit('chat message', $('#m').val());
+        let params = {username:username, msg:$('#m').val()};
+        socket.emit('newMessage', params);
         $('#m').val('');
         return false;
       });

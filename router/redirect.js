@@ -2,7 +2,7 @@ module.exports = {
     getIndex : function(req, res)
     {
     	if(req.session.signin)
-        	res.render('index.html', {title : 'KALIV main page'});
+        	res.render('index.html', {title : 'KALIV main page', username: req.session.username});
         else
         	res.redirect('/signin');
     },
@@ -30,7 +30,7 @@ module.exports = {
     getDevChat : function(req, res)
     {
     	if(req.session.signin)
-        	res.render('devchat.html');
+        	res.render('devchat.html', {username: req.session.username});
         else
         	res.redirect('/signin');
     }
