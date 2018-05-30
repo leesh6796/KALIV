@@ -16,9 +16,13 @@
         </div>
 
         <form method="POST" action="/signin/auth" onsubmit="makeHash()">
+            <div id="msg">
             <% if(signInFail) { %>
                 <!-- here -->
+                <p>Log-in is failed</p>
+
             <% } %>
+            </div>
             <input placeholder="user Id" type="text" id="username" name="username">
 
             <input placeholder="password" type="password" id="password" name="password">
@@ -39,7 +43,6 @@
             let password = $('#password').val();
             let hash = sha512(password);
             $('#password').val(hash);
-
             return true;
         }
     </script>

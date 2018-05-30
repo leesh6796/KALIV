@@ -17,9 +17,17 @@
         <form id="submitForm" method="POST" action="/signup/req" onsubmit="return requestSignUp()">
             <input placeholder="new username (id)" type="text" id="username" name="username" onkeydown="clearOverlap()" onchange="clearOverlap()">
             <input placeholder="e-mail" type="text" id="email" name="email" onkeydown="clearOverlap()" onchange="clearOverlap()">
-            <button type="button" onclick="checkOverlap();">Check validation</button>
+            
+            <div id="email_div">here1</div>
+            
+            <button type="button" onclick="checkOverlap_email();">Check validation</button>
+            
+            <input placeholder="user nick name" type="text" id="nickname" name="nickname">
 
             <!--<button type="button">Check e-mail validation</button>-->
+            <div id="nickname_div">here2</div>
+            <button type="button" onclick="checkOverlap_nickname();">Nickname check</button>
+            
 
             <input placeholder="new password" type="password" id="password" name="password">
             <input placeholder="confirm your password" type="password" id="c_password" name="c_password">
@@ -55,7 +63,14 @@
             return true;
         }
 
-        function checkOverlap()
+        function checkOverlap_nickname() {
+            // DB 연결 해야 되요@@
+
+
+        }
+
+
+        function checkOverlap_email()
         {
             let username = $('#username').val();
             let email = $('#email').val();
@@ -67,8 +82,22 @@
                     if(res.result === "success")
                     {
                         $('#overlap').val("success");
+                        document.getElementById('email_div').innerHTML = "success"
+                        document.getElementById('email_div').style.color = "green"
+                    }
+                    else {
+                        // 중복 메일입니다.
+                        document.getElementById('email_div').innerHTML = "overlapped e-mail"
+                        document.getElementById('email_div').style.color = "red"
+
                     }
                 });
+            }
+            else if(!checkEmailForm(email)) {
+                // 유효하지 않은 이메일 형식입니다.
+                document.getElementById('email_div').innerHTML = "Invalid e-mail format"
+                document.getElementById('email_div').style.color = "red"
+
             }
         }
 

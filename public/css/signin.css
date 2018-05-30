@@ -18,7 +18,7 @@ html, body {
 #container {
     position: fixed;
     width: 340px;
-    height: 450px;
+    height: 485px;
     top:50%;
     left:50%;
     margin-top:-250px;
@@ -93,3 +93,9 @@ input[type=button]:hover, input[type=submit]:hover {
 
 }
     
+#msg {
+    color: red;
+    width:100%;
+    text-align: center;
+    height: 32px;
+}
