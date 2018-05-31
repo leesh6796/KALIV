@@ -8,15 +8,10 @@ $(".mytext").on("keyup", function(e){
 
 if ((e.keyCode || e.which) == 13){
 
-var text = $(this).val();
 
-if (text !== ""){
 
-insertChat("me", text);
-
-$(this).val('');
-
-}
+myfunction();
+document.getElementById('mytext').value = "";
 
 }
 
@@ -96,14 +91,31 @@ $('body > div > div > div:nth-child(2) > span').click(function(){
 
 //-- Clear Chat
 resetChat();
+// Get the input field
+/*var input = document.getElementById("mytext");
+
+// Execute a function when the user releases a key on the keyboard
+input.addEventListener("keyup", function(event) {
+  // Cancel the default action, if needed
+  event.preventDefault();
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Trigger the button element with a click
+    myfunction();
+  }
+});*/
 
 function myfunction()
 {
 
     var inserttext = document.getElementById('mytext').value;
     console.log(inserttext);
+    if(inserttext != '\n' && inserttext !="")
+    {
     insertChat("me",inserttext,0);
     document.getElementById('mytext').value="";
+	}
+
 }
 
 /* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
