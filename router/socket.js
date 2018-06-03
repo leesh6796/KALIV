@@ -22,22 +22,27 @@ function init(server)
 	{
 		console.log("[chat] Socket Connected id = " + socket.id);
 
-		socket.on('join', function(params) // 유저 목록은 ajax로 db에 직접 요청하자
+		socket.on('join', async function(params) // 유저 목록은 ajax로 db에 직접 요청하자
 		{
 			let roomID = params.roomID;
 			let username = params.username;
+			let nickname = await User.getNickname(username);
 
 			if(!(roomID in clients)) // 없으면 새로운 array 생성
 			{
 				clients[roomID] = [];
 			}
+
+			_.each(clients[roomID], (member) => {
+				io.sockets(member.sockID).emit('chat_member_change', {type: 'join', chatroom: roomID, members: nickname})
+			});
 			
 			// clients[roomID]에 접속한 client 추가
-			clients[roomID].push({sockID: socket.id, username: username});
+			clients[roomID].push({sockID: socket.id, username: nickname});
 
 			// 새로 접속한 클라이언트에게는 접속자 모두를 보내준다.
-			//let memberList = _.pluck(clients[roomID], 'username');
-			//socket.emit('chat_member_change', {type:'update', chatroom: roomID, members: memberList});
+			let memberList = _.pluck(clients[roomID], 'username');
+			socket.emit('chat_member_change', {type:'update', chatroom: roomID, members: memberList});
 
 			console.log(clients);
 		});

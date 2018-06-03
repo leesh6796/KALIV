@@ -76,8 +76,8 @@ userSchema.statics = {
     {
         try
         {
-            let res = await this.find({"username": username});
-            if(res.length === 1) return res[0].nickname;
+            let res = await this.findOne({"username": username});
+            if(res !== null) return res.nickname;
             else return '';
         }
         catch(err)
