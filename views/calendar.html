@@ -5,7 +5,8 @@
 <title>calendar</title>
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.0/fullcalendar.css'>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link href="/css/chat-calendar.css" rel="stylesheet" >
+<link rel="stylesheet" media="print" href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.0/fullcalendar.print.css'>
+<link href="/css/calendar.css" rel="stylesheet" >
 
 </head>
 
@@ -113,26 +114,7 @@ header: {
   left: 'prev,next today addEventButton',
   center: 'title',
   right: 'month,agendaWeek,agendaDay'
-},events: [
-  // all day event
-  {
-    title  : 'Meeting',
-    start  : '2015-11-12'
-  },
-  // long-term event 
-  {
-    title  : 'Conference',
-    start  : '2015-11-13',
-    end    : '2015-11-15'
-  },
-  // short term event 
-  {
-    title  : 'Dentist',
-    start  : '2015-11-09T11:30:00',
-    end  : '2015-11-09T012:30:00',
-    allDay : false 
-  }
-],
+},
 customButtons: {
       addEventButton: {
         text: 'add event...',
@@ -153,6 +135,7 @@ customButtons: {
         }
       }
     }
+    
   })
 });
 
@@ -162,15 +145,10 @@ $(".mytext").on("keyup", function(e){
 
 if ((e.keyCode || e.which) == 13){
 
-var text = $(this).val();
 
-if (text !== ""){
 
-insertChat("me", text);
-
-$(this).val('');
-
-}
+myfunction();
+document.getElementById('mytext').value = "";
 
 }
 
@@ -256,8 +234,12 @@ function myfunction()
 
     var inserttext = document.getElementById('mytext').value;
     console.log(inserttext);
+    if(inserttext != '\n' && inserttext !="")
+    {
     insertChat("me",inserttext,0);
     document.getElementById('mytext').value="";
+  }
+
 }
 //-- Print Messages
 /*insertChat("me", "Hello Tom...", 0);  
