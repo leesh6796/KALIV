@@ -1,12 +1,65 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var _ = require('underscore');
+
 
 var chatRoomSchema = new Schema({
     name: {type: String, unique: true},
     type: Number,
-    userList: [Schema.Types.ObjectId],
-    messageList: [Schema.Types.ObjectId],
+    userList: [{type: Schema.Types.ObjectId, ref: 'user'}],
+    //messageList: [{type: Schema.Types.ObjectId, ref: 'message'}],
     creationDate: {type: Date, default: Date.now},
 });
+
+chatRoomSchema.methods = {
+    hasUser: async function(username)
+    {
+    	let userList = await this.populate('userList');
+
+    	if(_.contains(_.pluck(userList, 'username'), username)) // userList에서 username만 뽑은 array에 username이 있으면?
+    		return true;
+
+    	else return false;
+    },
+
+    addUser: async function(userID)
+    {
+    	this.userList.push(userID);
+    	this.save();
+    },
+};
+
+chatRoomSchema.statics = {
+	isOverlap: async function(roomName)
+	{
+		try
+        {
+            let res = await this.find({"name": roomName});
+            let count = Object.keys(res).length;
+            return !(count === 0);
+        }
+        catch(err)
+        {
+            console.error(err);
+            return true;
+        }
+	},
+
+	findRoom: async function(roomID)
+	{
+		//this.find({})
+		return 0;
+	},
+
+	findRoomID: async function(roomName)
+	{
+		let res = await this.find({'name': roomName});
+		if(res.length > 0)
+		{
+			return res[0]._id;
+		}
+		else return null;
+	},
+};
 
 module.exports = db.model('chatRoom', chatRoomSchema);

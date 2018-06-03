@@ -71,6 +71,34 @@ userSchema.statics = {
             console.error(err);
         }
     },
+
+    getNickname : async function(username)
+    {
+        try
+        {
+            let res = await this.find({"username": username});
+            if(res.length === 1) return res[0].nickname;
+            else return '';
+        }
+        catch(err)
+        {
+            console.log(err);
+        }
+    },
+
+    getUserID : async function(username)
+    {
+        try
+        {
+            let res = await this.find({"username": username});
+            if(res.length === 1) return res[0]._id;
+            else return 0;
+        }
+        catch(err)
+        {
+            console.log(err);
+        }
+    },
 };
 
 module.exports = global.db.model('user', userSchema); // first parameter는 schema name. schema name의 복수형을 collection name으로 사용한다.

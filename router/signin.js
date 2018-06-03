@@ -11,6 +11,7 @@ module.exports = {
 		{
 			req.session.signin = true;
 			req.session.username = username;
+			req.session.userID = await User.getUserID(username);
 			res.redirect('/');
 		}
 		else

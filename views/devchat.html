@@ -24,12 +24,13 @@
     <script>
       var socket = io();
       var username = '<%= username %>';
+      var roomID = '<%= roomID %>';
 
-      socket.emit('join', {roomID: 1, username: username});
+      socket.emit('join', {roomID: roomID, username: username});
 
       $('#chatform').submit(function() {
         let params = {username:username, msg:$('#m').val()};
-        socket.emit('newMessage', params);
+        socket.emit('new_message', params);
         $('#m').val('');
         return false;
       });

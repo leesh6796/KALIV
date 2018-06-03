@@ -2,7 +2,7 @@ module.exports = {
     getIndex : function(req, res)
     {
     	if(req.session.signin)
-        	res.render('index.html', {title : 'KALIV main page', username: req.session.username});
+        	res.render('index.html', {title : 'KALIV main page', username: req.session.username, userID: req.session.userID});
         else
         	res.redirect('/signin');
     },
@@ -30,14 +30,14 @@ module.exports = {
     getDevChat : function(req, res)
     {
     	if(req.session.signin)
-        	res.render('devchat.html', {username: req.session.username});
+        	res.render('devchat.html', {username: req.session.username, roomID: req.params.roomID});
         else
         	res.redirect('/signin');
     },
     getChat : function(req, res)
     {
     	if(req.session.signin)
-        	res.render('chat.html', {username: req.session.username});
+        	res.render('chat.html', {username: req.session.username, roomID: req.params.roomID});
         else
         	res.redirect('/signin');
     },
@@ -48,4 +48,11 @@ module.exports = {
         else
         	res.redirect('/signin');
     },
+    getDev : function(req, res)
+    {
+        if(req.session.signin)
+            res.render('dev.html', {username: req.session.username});
+        else
+            res.redirect('/signin');
+    }
 };

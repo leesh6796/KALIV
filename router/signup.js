@@ -10,12 +10,14 @@ module.exports = {
 		let username = req.body.username;
 		let email = req.body.email;
 		let password = req.body.password;
+		let nickname = req.body.nickname;
 		let token = sha512(username);
 
 		var user = new User();
 		user.username = username;
 		user.email = email;
 		user.password = password;
+		user.nickname = nickname;
 		user.verifyToken = token;
 
 		await user.save((err) => {

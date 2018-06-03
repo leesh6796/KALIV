@@ -2,10 +2,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var messageSchema = new Schema({
+    chatRoom: {type: Schema.Types.ObjectId, ref: 'chatRoom'},
     sentDate: {type: Date, default: Date.now},
     type: Number,
-    sender: Schema.Types.ObjectId,
-    parentChatRoom: Schema.Types.ObjectId,
+    sender: {type: Schema.Types.ObjectId, ref: 'user'},
 
     // Text Message
     Text: String,
