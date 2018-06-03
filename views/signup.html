@@ -15,14 +15,14 @@
         </div>
 
         <form id="submitForm" method="POST" action="/signup/req" onsubmit="return requestSignUp()">
-            <input placeholder="new username (id)" type="text" id="username" name="username" onkeydown="clearOverlap()" onchange="clearOverlap()">
-            <input placeholder="e-mail" type="text" id="email" name="email" onkeydown="clearOverlap()" onchange="clearOverlap()">
+            <input placeholder="new username (id)" type="text" id="username" name="username" onkeydown="clearEmailOverlap()" onchange="clearEmailOverlap()">
+            <input placeholder="e-mail" type="text" id="email" name="email" onkeydown="clearEmailOverlap()" onchange="clearEmailOverlap()">
             
             <div id="email_div"></div>
             
             <button type="button" onclick="checkOverlap_email();">Check validation</button>
             
-            <input placeholder="user nick name" type="text" id="nickname" name="nickname">
+            <input placeholder="user nickname" type="text" id="nickname" name="nickname" onkeydown="clearNicknameOverlap()" onchange="clearNicknameOverlap()">
 
             <!--<button type="button">Check e-mail validation</button>-->
             <div id="nickname_div"></div>
@@ -32,7 +32,8 @@
             <input placeholder="new password" type="password" id="password" name="password">
             <input placeholder="confirm your password" type="password" id="c_password" name="c_password">
 
-            <input type="hidden" id="overlap" value="" />
+            <input type="hidden" id="email_overlap" value="" />
+            <input type="hidden" id="nickname_overlap" value="" />
 
             <div id="lower">
                 <input type="submit" value="Sign up">
@@ -44,9 +45,14 @@
     <script src="/js/sha512.js"></script>
 
     <script>
-        function clearOverlap()
+        function clearEmailOverlap()
         {
-            $('#overlap').val('');
+            $('#email_overlap').val('');
+        }
+
+        function clearNicknameOverlap()
+        {
+            $('#nickname_overlap').val('');
         }
 
         function checkEmailForm(email)
@@ -63,12 +69,6 @@
             return true;
         }
 
-        function checkOverlap_nickname() {
-            // DB 연결 해야 되요@@
-
-
-        }
-
 
         function checkOverlap_email()
         {
@@ -81,7 +81,7 @@
                     // res.res === "overlap" 겹친다. success면 안겹친다.
                     if(res.result === "success")
                     {
-                        $('#overlap').val("success");
+                        $('#email_overlap').val("success");
                         document.getElementById('email_div').innerHTML = "success"
                         document.getElementById('email_div').style.color = "green"
                     }
@@ -101,20 +101,50 @@
             }
         }
 
+        function checkOverlap_nickname()
+        {
+            // DB 연결 해야 되요@@
+            let nickname = $('#nickname').val();
+
+            if(nickname !== '')
+            {
+                $.get("/signup/check/" + nickname, function(res) {
+                    // res.res === "overlap" 겹친다. success면 안겹친다.
+                    if(res.result === "success")
+                    {
+                        $('#nickname_overlap').val('success');
+                        document.getElementById('nickname_div').innerHTML = "success"
+                        document.getElementById('nickname_div').style.color = "green"
+                    }
+                    else {
+                        // 중복 닉네임입니다.
+                        document.getElementById('nickname_div').innerHTML = "overlapped nickname"
+                        document.getElementById('nickname_div').style.color = "red"
+                    }
+                });
+            }
+        }
+
         function requestSignUp()
         {
             let password = $('#password').val();
             let c_password = $('#c_password').val();
-            let overlap = $('#overlap').val();
+            let email_overlap = $('#email_overlap').val();
+            let nickname_overlap = $('#nickname_overlap').val();
 
             if(password !== c_password)
             {
                 alert('패스워드 확인이 일치하지 않습니다.');
                 return false;
             }
-            else if(overlap !== 'success')
+            else if(password === '' || c_password === '')
             {
-                alert('아이디, 이메일 중복을 확인해주세요.');
+                alert('패스워드를 입력해주세요.');
+                return false;
+            }
+            else if(email_overlap !== 'success' || nickname_overlap !== 'success')
+            {
+                alert('아이디, 이메일 또는 닉네임 중복을 확인해주세요.');
                 return false;
             }
 

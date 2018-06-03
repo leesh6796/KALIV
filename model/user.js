@@ -29,7 +29,7 @@ userSchema.methods = {
 };
 
 userSchema.statics = {
-    checkOverlap: async function(username, email)
+    checkOverlapEmail: async function(username, email)
     {
         try
         {
@@ -40,6 +40,22 @@ userSchema.statics = {
         catch(err)
         {
             console.error(err);
+            return true;
+        }
+    },
+
+    checkOverlapNickname : async function(nickname)
+    {
+        try
+        {
+            let res = await this.find({"nickname": nickname});
+            let count = Object.keys(res).length;
+            return !(count === 0);
+        }
+        catch(err)
+        {
+            console.error(err);
+            return true;
         }
     },
 

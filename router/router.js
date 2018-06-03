@@ -17,7 +17,8 @@ router.route('/chat').get(redirector.getChat);
 router.route('/calendar').get(redirector.getCalendar);
 
 router.route('/signup/req').post(signup.postSignUp);
-router.route('/signup/check/:username/:email').get(signup.getCheckOverlap);
+router.route('/signup/check/:username/:email').get(signup.getCheckOverlap_Email);
+router.route('/signup/check/:nickname').get(signup.getCheckOverlap_Nickname);
 router.route('/signup/verify/:token').get(signup.getVerify);
 
 router.route('/signin/auth').post(signin.postSignIn);
