@@ -24,13 +24,16 @@ module.exports = {
 		let room = await ChatRoom.findOne({name: roomName})
 		if(room !== null)
 		{
-			if(!(userID in room.userList))
+			let hasUser = await room.hasUser(userID);
+			if(!hasUser)
 			{
-				console.log('add User');
+				console.log('add User ' + username + ' into ' + roomName);
 				room.addUser(userID);
 
 				let me = await User.findOne({username:username});
 				await me.enterChatRoom(room._id);
+
+				req.session.enterChatRooms.push(roomName);
 			}
 			//res.send('/chat/'+ room._id);
 			res.send('/chat/'+ room._id);
@@ -40,6 +43,11 @@ module.exports = {
 	getEnterRoomList: async function(req, res)
 	{
 		res.send(req.session.enterChatRooms);
+	},
+
+	getUsername: async function(req, res)
+	{
+		res.send(req.session.username);
 	},
 
 	getRoomNames: async function(roomList) // [roomID] => [roomName]

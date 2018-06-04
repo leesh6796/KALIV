@@ -12,14 +12,21 @@ var chatRoomSchema = new Schema({
 });
 
 chatRoomSchema.methods = {
-    hasUser: async function(username)
+    hasUser: async function(userID)
     {
-    	let userList = await this.populate('userList');
+    	let userList = await this.userList;
 
-    	if(_.contains(_.pluck(userList, 'username'), username)) // userList에서 username만 뽑은 array에 username이 있으면?
-    		return true;
+    	let i;
+    	let exists = false;
+    	for(i=0; i<userList.length; i++)
+    	{
+    		if(userList[i].toString() === userID.toString())
+    		{
+    			exists = true;
+    		}
+    	}
 
-    	else return false;
+    	return exists;
     },
 
     addUser: async function(userID)
