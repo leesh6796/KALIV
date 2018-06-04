@@ -30,7 +30,7 @@ $(document).ready(function() {
     }
     document.getElementById("mySidenav").innerHTML = document.getElementById("mySidenav").innerHTML + 
                                     '<div hidden><div id="chatroomname>chatroomname</div><div id="username"></div></div>';
-
+});
 var me = {};
 me.avatar = "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png";
 me.username="me";
