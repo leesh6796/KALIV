@@ -173,3 +173,10 @@ insertChat("you", "LOL", 12000);*/
 
 
 //-- NOTE: No use time on insertChat.
+
+function test()
+{
+    $.post('/chat/enter', {roomName: 'First Chat Room', username:'leesh6796'}, function(res) {
+        location.href = res;
+    });
+}

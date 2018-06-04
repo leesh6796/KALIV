@@ -56,6 +56,7 @@ module.exports = {
     	if(req.session.signin)
         	res.render('chat.html',
                 {
+                    title: 'KALIV chat',
                     username: req.session.username,
                     roomID: req.params.roomID,
                 });

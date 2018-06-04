@@ -33,7 +33,7 @@ module.exports = {
 				await me.enterChatRoom(room._id);
 			}
 			//res.send('/chat/'+ room._id);
-			res.redirect('/chat/'+ room._id);
+			res.send('/chat/'+ room._id);
 		}
 	},
 
