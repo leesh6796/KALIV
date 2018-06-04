@@ -2,6 +2,9 @@
 
 // JavaScript Document
 
+$(".chat_area").scrollTop($(document).height());
+
+
 $(document).ready(function() {
 
 $(".mytext").on("keyup", function(e){
@@ -55,7 +58,7 @@ function insertChat(who, text, time){
                     '</li>';                    
     }else{
         control = '<li class="left clearfix">' +
-                        '<div class="msj macro">' +
+                        '<div class="msj-rta macro">' +
                         '<span class="avatar  chat-img1 pull-left"><img class="img-circle" style="height: 34px; width: 34px;" src="'+ me.avatar +'" /></div>' +
                             '<div class="text text-l">' +
                                 '<p>'+ text +'</p>' +

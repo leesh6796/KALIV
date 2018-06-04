@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>무제 문서</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link href="/css/chat.css" rel="stylesheet" >
+<link href="./css/chat.css" rel="stylesheet" >
 <script>
     /* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
     function openNav() {
@@ -26,7 +26,7 @@
 <body>
 <div class = "header">
   <i class="fa fa-bars" style="width:" onclick="openNav()"></i>
-    KALIV
+    <a style="color:white;" href="index.html">KALIV</a>
      
 </div>
 
@@ -46,7 +46,7 @@
 
 
 <div id="main" class="main_section">
-   <div class="container">
+   <div class="container" >
       <div class="chat_container">
          
          <!--chat_sidebar-->
@@ -55,40 +55,37 @@
          <div class="col-sm-9 message_section">
      <div class="row">
      <div class="new_message_head">
-     <div class="pull-left"><button><i class="fa fa-plus-square-o" aria-hidden="true"></i> New Message</button></div><div class="pull-right"><div class="dropdown">
-  <button class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <i class="fa fa-cogs" aria-hidden="true"></i>  Setting
+     <div class="pull-left"><button><!--i class="fa fa-plus-square-o" aria-hidden="true"></i--> Chatroom name</button></div><div class="pull-right"><div class="dropdown">
+  <button class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Members
     <span class="caret"></span>
   </button>
-  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
-    <li><a href="#">Action</a></li>
-    <li><a href="#">Profile</a></li>
-    <li><a href="#">Logout</a></li>
+  <ul id = "chatmember" class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+
   </ul>
 </div></div>
      </div><!--new_message_head-->
      
-     <div class="chat_area">
-     <ul class="list-unstyled">
-     <li class="left clearfix">
+     <div  class="chat_area" >
+     <ul  id="chatroom"  class="list-unstyled scroll" >
+     <!--li class="left clearfix">
                      <span class="chat-img1 pull-left">
-                     <img src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png" alt="User Avatar" class="img-circle">
-                     </span>
-                     <div class="chat-body1 clearfix">
-                        <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia.</p>
-            <div class="chat_time pull-right">09:40PM</div>
-                     </div>
-                  </li>
+                          <img src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png" alt="User Avatar" class="img-circle">
+                        </span>
+                        <div class="bubble me clearfix">
+                            <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia.</p>
+                <div class="chat_time pull-right">09:40PM</div>
+                        </div>
+                      </li>
           
-                  <li class="left clearfix admin_chat">
-                     <span class="chat-img1 pull-right">
-                     <img src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png" alt="User Avatar" class="img-circle">
-                     </span>
-                     <div class="chat-body1 clearfix">
-                        <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia.</p>
-              <div class="chat_time pull-left">09:40PM</div>
-                     </div>
-                  </li>
+                      <li class="left clearfix admin_chat">
+                        <span class="chat-img1 pull-right">
+                          <img src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png" alt="User Avatar" class="img-circle">
+                        </span>
+                        <div class="bubble you clearfix">
+                            <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia.</p>
+                  <div class="chat_time pull-left">09:40PM</div>
+                        </div>
+                  </li-->
           
         
      
@@ -108,10 +105,10 @@
       </div>
    </div>
 </div>
-<script src="/js/jquery.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://use.fontawesome.com/45e03a14ce.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<script src="/js/chat.js"></script>
+<script src="./js/chat.js"></script>
 </body>
 </html>
