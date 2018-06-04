@@ -1,4 +1,4 @@
-\// JavaScript Document
+// JavaScript Document
 
 // JavaScript Document
 
@@ -7,28 +7,28 @@
 
 $(document).ready(function() {
     var elements;
-for(var i=0; i< 2;i++)
-{
-    elements = '<li class="chatmembox"><img class="chat-img2 img-circle" alt="User Avatar"  src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png"> &nbsp; me</li>';
-    $("#chatmember").append(elements);
-}
+    //add chat memebers
+    console.log(<%=enterChatRoom%>)
+    for(var i=0; i< 2;i++)
+    {
+        elements = '<li class="chatmembox"><img class="chat-img2 img-circle" alt="User Avatar"  src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png"> &nbsp me &nbsp&nbsp <i class = "fa fa-thumbs-up"></i> &nbsp<i class = "fa fa-thumbs-down"></i></li>';
+        $("#chatmember").append(elements);
+    }
 
-$(".mytext").on("keyup", function(e){
+    $(".mytext").on("keyup", function(e){
 
-if ((e.keyCode || e.which) == 13){
-
-
-
-myfunction();
-document.getElementById('mytext').value = "";
-
-
-
-}
-
+        if ((e.keyCode || e.which) == 13){
+            myfunction();
+         document.getElementById('mytext').value = "";
+        }
+    });
+    //add chatroom list
+    for(var i=0;i< <%=enterChatRoom%>.length;i++)
+    {
+            document.getElementById("mySidenav").innerHTML = document.getElementById("mySidenav").innerHTML+ '<a href="#"><img src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png" style="height: 34px; width: 34px; margin-right:10px;"class="img-circle">'+<%=enterChatRoom%>[i]+'</a>';
+    }
 });
 
-});
 var me = {};
 me.avatar = "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png";
 me.username="me";
