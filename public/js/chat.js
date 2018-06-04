@@ -9,7 +9,12 @@ $(document).ready(function() {
     var elements;
     //add chat memebers
     //console.log(<%=enterChatRoom%>);
-    var roomlist = $.get("/chat/get/enter/roomlist");
+    $.get("/chat/get/enter/roomlist", function(roomlist) {
+        for(var i=0;i< roomlist.length;i++)
+        {
+            document.getElementById("mySidenav").innerHTML = document.getElementById("mySidenav").innerHTML+ '<a href="#"><img src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png" style="height: 34px; width: 34px; margin-right:10px;"class="img-circle" onclick="enter(this.innerHTML)">'+roomlist[i]+'</a>';
+        }
+    });
     for(var i=0; i< 2;i++)
     {
         elements = '<li class="chatmembox"><img class="chat-img2 img-circle" alt="User Avatar"  src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png"> &nbsp me &nbsp&nbsp <i class = "fa fa-thumbs-up"></i> &nbsp<i class = "fa fa-thumbs-down"></i></li>';
@@ -24,10 +29,7 @@ $(document).ready(function() {
         }
     });
     //add chatroom list
-    for(var i=0;i< roomlist.length;i++)
-    {
-            document.getElementById("mySidenav").innerHTML = document.getElementById("mySidenav").innerHTML+ '<a href="#"><img src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png" style="height: 34px; width: 34px; margin-right:10px;"class="img-circle" onclick="enter(this.innerHTML)">'+roomlist[i]+'</a>';
-    }
+    
     document.getElementById("mySidenav").innerHTML = document.getElementById("mySidenav").innerHTML + 
                                     '<div hidden><div id="chatroomname>chatroomname</div><div id="username"></div></div>';
 });
