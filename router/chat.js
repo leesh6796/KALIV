@@ -1,5 +1,6 @@
 var User = require('./model').user;
 var ChatRoom = require('./model').chatRoom;
+var _ = require('underscore');
 
 module.exports = {
 	enterRoom : async function(req, res)
@@ -14,7 +15,7 @@ module.exports = {
 			var newRoom = new ChatRoom();
 			newRoom.name = roomName;
 			newRoom.creationDate = (new Date(Date.now())).toString();
-			newRoom.userList = [userID];
+			newRoom.userList = [];
 
 			await newRoom.save();
 			console.log('[ChatRoom] New Chatroom is made (name : ' + roomName + ')');
@@ -27,24 +28,31 @@ module.exports = {
 			{
 				console.log('add User');
 				room.addUser(userID);
+
+				let me = await User.findOne({username:username});
+				await me.enterChatRoom(room._id);
 			}
-			res.send('/chat/'+ room._id);
-			//res.redirect('/chat/'+ room._id);
+			//res.send('/chat/'+ room._id);
+			res.redirect('/chat/'+ room._id);
 		}
 	},
 
-	/*isOverlap : async function(req, res)
+	getEnterRoomList: async function(req, res)
 	{
-		let roomName = req.params.roomName.toString();
+		res.send(req.session.enterChatRooms);
+	},
 
-		isOverlap = ChatRoom.isOverlap(roomName);
-		if(isOverlap) // 중복이면
+	getRoomNames: async function(roomList) // [roomID] => [roomName]
+	{
+		let roomNames = [];
+
+		let i;
+		for(i=0; i<roomList.length; i++)
 		{
-			res.send({result:"overlap"});
+			let room = await ChatRoom.findOne({_id: roomList[i]});
+			roomNames.push(room.name);
 		}
-		else
-		{
-			res.send({result:"success"});
-		}
-	},*/
+
+		return roomNames;
+	},
 };

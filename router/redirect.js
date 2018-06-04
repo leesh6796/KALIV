@@ -2,7 +2,12 @@ module.exports = {
     getIndex : function(req, res)
     {
     	if(req.session.signin)
-        	res.render('index.html', {title : 'KALIV main page', username: req.session.username, userID: req.session.userID});
+        	res.render('index.html',
+                {
+                    title : 'KALIV main page',
+                    username: req.session.username,
+                    userID: req.session.userID,
+                });
         else
         	res.redirect('/signin');
     },
@@ -11,14 +16,22 @@ module.exports = {
     	if(req.session.signin)
     		res.redirect('/');
     	else
-    		res.render('signin.html', {title : 'KALIV Login', signInFail: false});
+    		res.render('signin.html',
+                {
+                    title : 'KALIV Login',
+                    signInFail: false
+                });
     },
     getSignInFail : function(req, res)
     {
     	if(req.session.signin)
     		res.redirect('/');
     	else
-    		res.render('signin.html', {title : 'KALIV Login', signInFail: true});
+    		res.render('signin.html',
+                {
+                    title : 'KALIV Login',
+                    signInFail: true
+                });
     },
     getSignUp : (req, res) =>
     {
@@ -30,28 +43,42 @@ module.exports = {
     getDevChat : function(req, res)
     {
     	if(req.session.signin)
-        	res.render('devchat.html', {username: req.session.username, roomID: req.params.roomID});
+        	res.render('devchat.html',
+                {
+                    username: req.session.username,
+                    roomID: req.params.roomID,
+                });
         else
         	res.redirect('/signin');
     },
     getChat : function(req, res)
     {
     	if(req.session.signin)
-        	res.render('chat.html', {username: req.session.username, roomID: req.params.roomID});
+        	res.render('chat.html',
+                {
+                    username: req.session.username,
+                    roomID: req.params.roomID,
+                });
         else
         	res.redirect('/signin');
     },
     getCalendar : function(req, res)
     {
     	if(req.session.signin)
-        	res.render('calendar.html', {username: req.session.username});
+        	res.render('calendar.html',
+                {
+                    username: req.session.username,
+                });
         else
         	res.redirect('/signin');
     },
     getDev : function(req, res)
     {
         if(req.session.signin)
-            res.render('dev.html', {username: req.session.username});
+            res.render('dev.html',
+                {
+                    username: req.session.username,
+                });
         else
             res.redirect('/signin');
     }

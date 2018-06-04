@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var _ = require('underscore');
 
 var userSchema = new Schema({
     username: {type: String, unique: true},
@@ -9,7 +10,7 @@ var userSchema = new Schema({
     verifyToken: String,
     kaistVerification: {type: Boolean, default: false},
     signupDate: { type: Date, default: Date.now },
-    enterChatRoomList: {type: [Schema.Types.ObjectId], default: []},
+    enterChatRoomList: [{type: Schema.Types.ObjectId, ref: 'chatRoom'}],
     profilePictureURL: {type: String, default: ""},
     hateIndex: {type: Number, default: 0},
     blockIndex: {type: Number, default: 0},
@@ -25,6 +26,12 @@ userSchema.methods = {
         });
 
         return result;
+    },
+
+    enterChatRoom: async function(roomID)
+    {
+        this.enterChatRoomList.push(new mongoose.Types.ObjectId(roomID));
+        await this.save();
     },
 };
 

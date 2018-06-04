@@ -45,10 +45,13 @@ chatRoomSchema.statics = {
         }
 	},
 
-	findRoom: async function(roomID)
+	findRoomName: async function(roomID)
 	{
-		//this.find({})
-		return 0;
+		let res = await this.findOne({_id: roomID});
+		if(res !== null)
+			return res.name;
+		else
+			return '';
 	},
 
 	findRoomID: async function(roomName)

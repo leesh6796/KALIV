@@ -1,4 +1,5 @@
 var User = require('./model').user;
+var Chat = require('./Chat');
 
 module.exports = {
 	postSignIn : async function(req, res)
@@ -9,9 +10,14 @@ module.exports = {
 		result = await User.signIn(username, password);
 		if(result)
 		{
+			let me = await User.findOne({username: username});
+
 			req.session.signin = true;
 			req.session.username = username;
-			req.session.userID = await User.getUserID(username);
+			req.session.userID = me._id;
+
+			let ridList = me.enterChatRoomList;
+			req.session.enterChatRooms = await Chat.getRoomNames(ridList);
 			res.redirect('/');
 		}
 		else
