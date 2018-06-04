@@ -1,11 +1,17 @@
-// JavaScript Document
+\// JavaScript Document
 
 // JavaScript Document
 
-$(".chat_area").scrollTop($(document).height());
+
 
 
 $(document).ready(function() {
+    var elements;
+for(var i=0; i< 2;i++)
+{
+    elements = '<li class="chatmembox"><img class="chat-img2 img-circle" alt="User Avatar"  src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png"> &nbsp; me</li>';
+    $("#chatmember").append(elements);
+}
 
 $(".mytext").on("keyup", function(e){
 
@@ -16,6 +22,8 @@ if ((e.keyCode || e.which) == 13){
 myfunction();
 document.getElementById('mytext').value = "";
 
+
+
 }
 
 });
@@ -23,9 +31,10 @@ document.getElementById('mytext').value = "";
 });
 var me = {};
 me.avatar = "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png";
-
+me.username="me";
 var you = {};
 you.avatar = "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png";
+you.username="you";
 
 function formatAMPM(date) {
     var hours = date.getHours();
@@ -47,32 +56,41 @@ function insertChat(who, text, time){
     var date = formatAMPM(new Date());
     
     if (who == "me"){
-        control = '<li class="right clearfix">' +
-                        '<div class="msj macro">' +
-                        '<span class="avatar  chat-img1 pull-right"><img class="img-circle" style="height: 34px; width: 34px;" src="'+ me.avatar +'" /></div>' +
-                            '<div class="text text-r pull-right">' +
-                                '<p>'+ text +'</p>' +
-                                '<p><small>'+date+'</small></p>' +
-                            '</div>' +
-                        '</div>' +
+        control = '<li  class="left clearfix admin_chat">' +
+                        
+                        '<span class="chat-img1 pull-right"><img class="img-circle" alt="User Avatar"  src="'+ me.avatar +'" />'+'<div style="text-align:center;">'+me.username+'</div></span>' 
+                        +
+                            '<div class="bubble you clearfix">' +
+                                '<p >'+ text +'</p>' +
+                                '<div class="chat_time pull-left">'+date+'</div>' +
+                        
+                            '</div>'+
+
                     '</li>';                    
     }else{
-        control = '<li class="left clearfix">' +
-                        '<div class="msj-rta macro">' +
-                        '<span class="avatar  chat-img1 pull-left"><img class="img-circle" style="height: 34px; width: 34px;" src="'+ me.avatar +'" /></div>' +
-                            '<div class="text text-l">' +
+        control = '<li class="left clearfix admin_chat">' +
+                        
+                        '<span class="chat-img1 pull-left"><img class="img-circle" alt="User Avatar" src="'+ you.avatar +'" /></span>' +
+                            '<div class="bubble me clearfix">' +
                                 '<p>'+ text +'</p>' +
-                                '<p><small>'+date+'</small></p>' +
+                                '<div class="chat_time pull-right">'+date+'</div>' +
                             '</div>' +
-                        '</div>' +
+                        
                     '</li>';
     }
     setTimeout(
-        function(){                        
-            $("ul").append(control).scrollTop($("ul").prop('scrollHeight'));
+        function(){ 
+            var element = document.getElementById("chatroom");                       
+            $("#chatroom").append(control).animate({scrollTop : element.scrollHeight });
+
+            
         }, time);
+
     
 }
+
+
+
 
 function resetChat(){
     $("ul").empty();
@@ -91,6 +109,8 @@ $(".mytext").on("keydown", function(e){
 $('body > div > div > div:nth-child(2) > span').click(function(){
     $(".mytext").trigger({type: 'keydown', which: 13, keyCode: 13});
 })
+
+
 
 //-- Clear Chat
 resetChat();
@@ -117,7 +137,7 @@ function myfunction()
     {
     insertChat("me",inserttext,0);
     document.getElementById('mytext').value="";
-	}
+    }
 
 }
 
