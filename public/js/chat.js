@@ -12,7 +12,7 @@ $(document).ready(function() {
     $.get("/chat/get/enter/roomlist", function(roomlist) {
         for(var i=0;i< roomlist.length;i++)
         {
-            document.getElementById("mySidenav").innerHTML = document.getElementById("mySidenav").innerHTML+ '<a href="#"><img src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png" style="height: 34px; width: 34px; margin-right:10px;"class="img-circle" onclick="enter(this.innerHTML)">'+roomlist[i]+'</a>';
+            document.getElementById("mySidenav").innerHTML = document.getElementById("mySidenav").innerHTML+ '<a onclick="redirectroom('+roomlist[i]+')"><img src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png" style="height: 34px; width: 34px; margin-right:10px;"class="img-circle">'+roomlist[i]+'</a>';
         }
     });
     for(var i=0; i< 2;i++)
@@ -30,8 +30,7 @@ $(document).ready(function() {
     });
     //add chatroom list
     
-    document.getElementById("mySidenav").innerHTML = document.getElementById("mySidenav").innerHTML + 
-                                    '<div hidden><div id="chatroomname>chatroomname</div><div id="username"></div></div>';
+   
 });
 var me = {};
 me.avatar = "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png";
@@ -150,6 +149,12 @@ function myfunction()
 
 }
 
+function redirectroom(roomname)
+{
+    $.post('/chat/enter', {roomName: roomname, username:'leesh6796'}, function(res) {
+        location.href = res;
+    });
+}
 /* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
@@ -171,5 +176,7 @@ insertChat("you", "Tell me a joke",7000);
 insertChat("me", "Spaceman: Computer! Computer! Do we bring battery?!", 9500);
 insertChat("you", "LOL", 12000);*/
 
+
+    
 
 //-- NOTE: No use time on insertChat.
