@@ -26,10 +26,16 @@
       var username = '<%= username %>';
       var roomID = '<%= roomID %>';
 
+      socket.on('new_message', function(params) {
+        let nickname = params.nickname;
+        let message = params.message;
+        $('#messages').append('<li>' + nickname + ' : ' + message + '</li>');
+      });
+
       socket.emit('join', {roomID: roomID, username: username});
 
       $('#chatform').submit(function() {
-        let params = {username:username, msg:$('#m').val()};
+        let params = {username:username, roomID: roomID, message:$('#m').val()};
         socket.emit('new_message', params);
         $('#m').val('');
         return false;

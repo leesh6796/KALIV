@@ -1,6 +1,7 @@
 var socketio = require('socket.io');
 var User = require('./model').user;
 var ChatRoom = require('./model').chatRoom;
+var Message = require('./model').message;
 var _ = require('underscore');
 
 /*
@@ -33,8 +34,9 @@ function init(server)
 				clients[roomID] = [];
 			}
 
+			// 클라이언트는 join type 받으면, 자기가 가지고 있는 접속자 목록과 비교해 없으면 리스트에 새로 추가한다.
 			_.each(clients[roomID], (member) => {
-				io.sockets(member.sockID).emit('chat_member_change', {type: 'join', chatroom: roomID, members: nickname})
+				io.to(member.sockID).emit('chat_member_change', {type: 'join', chatroom: roomID, nickname: nickname})
 			});
 			
 			// clients[roomID]에 접속한 client 추가
@@ -58,15 +60,22 @@ function init(server)
 			});
 		});
 
-		socket.on('new_message', function(params)
+		socket.on('new_message', async function(params)
 		{
 			let username = params.username;
-			let chatroom = params.chatroom;
-			let nickname = params.nickname;
+			let userID = await User.getUserID(username);
+			let roomID = params.roomID;
+			let nickname = await User.getNickname(username);
+			let message = params.message;
+			let timestamp = new Date(Date.now());
 
-			timestamp = new Date(Date.now());
-			msg = params.msg;
-			console.log("[chat] message : " + msg);
+			Message.addTextMessage(userID, roomID, timestamp, message);
+			console.log("[chat] [roomID = %s] %s : %s", roomID, nickname, message);
+
+			_.each(clients[roomID], (member) => {
+				// 특정 소켓에게 보낼 때에는 io.to(sockID).emit 사용한다.
+				io.to(member.sockID).emit('new_message', {type: 0, nickname: nickname, message: message});
+			});
 		});
 	});
 

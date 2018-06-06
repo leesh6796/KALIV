@@ -50,6 +50,11 @@ module.exports = {
 		res.send(req.session.username);
 	},
 
+	getNickname: async function(req, res)
+	{
+		res.send(req.session.nickname);
+	},
+
 	getRoomNames: async function(roomList) // [roomID] => [roomName]
 	{
 		let roomNames = [];
