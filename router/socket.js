@@ -87,6 +87,19 @@ function init(server)
 				socket.emit('load_event', cal.eventList);
 			}
 
+			// ignore list를 보내준다.
+			let ignoreList = await User.getIgnoreList(username);
+			let ignores = []
+
+			for(i=0; i<ignoreList.length; i++)
+			{
+				let targetID = ignoreList[i];
+				let targetNick = await User.getNicknameById(targetID);
+
+				ignores.push(targetNick);
+			}
+			socket.emit('load_ignore', ignores);
+
 			console.log(clients);
 		});
 

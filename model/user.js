@@ -147,6 +147,16 @@ userSchema.statics = {
         }
         return '';
     },
+
+    getIgnoreList : async function(username)
+    {
+        let user = await this.findOne({username: username});
+        if(user !== null)
+        {
+            return user.ignoreList;
+        }
+        return '';
+    }
 };
 
 module.exports = global.db.model('user', userSchema); // first parameter는 schema name. schema name의 복수형을 collection name으로 사용한다.
