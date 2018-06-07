@@ -8,38 +8,19 @@ module.exports = {
 	{
 		let roomID = req.params.roomID;
 
-		var newCalendar = new Calendar();
-		newCalendar.parentRoom = roomID;
-		newCalendar.eventList = [];
-		newCalendar.save();
-	},
-
-	getEnterRoomList: async function(req, res)
-	{
-		res.send(req.session.enterChatRooms);
-	},
-
-	getNameInfo: async function(req, res)
-	{
-		let nameInfo = {
-			username: req.session.username,
-			nickname: req.session.nickname
-		};
-
-		res.send(nameInfo);
-	},
-
-	getRoomNames: async function(roomList) // [roomID] => [roomName]
-	{
-		let roomNames = [];
-
-		let i;
-		for(i=0; i<roomList.length; i++)
+		let found = await Calendar.findOne({roomID: roomID});
+		if(found === null)
 		{
-			let room = await ChatRoom.findOne({_id: roomList[i]});
-			roomNames.push(room.name);
-		}
+			var newCalendar = new Calendar();
+			newCalendar.parentRoom = roomID;
+			newCalendar.eventList = [];
+			newCalendar.save();
 
-		return roomNames;
+			ChatRoom.findOne({_id: roomID})
+				.then((room) => {
+					room.type = 1;
+					room.save();
+				});
+		}
 	},
 };

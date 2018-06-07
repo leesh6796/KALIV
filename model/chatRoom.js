@@ -5,7 +5,7 @@ var _ = require('underscore');
 
 var chatRoomSchema = new Schema({
     name: {type: String, unique: true},
-    type: Number,
+    type: {type: Number, default: 0},
     userList: [{type: Schema.Types.ObjectId, ref: 'user'}],
     //messageList: [{type: Schema.Types.ObjectId, ref: 'message'}],
     creationDate: {type: Date, default: Date.now},
