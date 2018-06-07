@@ -40,6 +40,10 @@ $(document).ready(function() {
         socket.emit('join', {roomID: roomID, username: username});
     });
 
+    socket.on('exit_success', function(params) {
+        location.href = '/';
+    });
+
     socket.on('load_message', function(params) {
         let messages = params;
 
@@ -91,14 +95,12 @@ $(document).ready(function() {
             let newMember = params.nickname;
             memberset.push(newMember);
             makememberlist();
-
         }
         else if(type === 'exit') // 한 멤버가 퇴장
         {
             let exitMember = params.nickname;
             memberset = removemember(memberset, exitMember);
             makememberlist();
-
         }
         else if(type === 'update') // 채팅방 처음 접속했을 때 참여자 목록 받기
         {
@@ -240,7 +242,10 @@ function outroom()
     var out = confirm("Are you sure to go out?");
     if(out)
     {
-        window.location.replace('/');
+        socket.emit('exit', {
+            roomID: roomID,
+            username: username
+        });
     }
 }
 

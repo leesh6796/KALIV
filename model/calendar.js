@@ -10,19 +10,18 @@ var calendarSchema = new Schema({
    		name: {type: String},
    		startDate: {type: String},
    		endDate: {type: String},
-   		memo: {type: String}
+   		allDay: {type: Boolean},
    	}],
 });
 
 calendarSchema.methods = {
-	addEvent: async function(eventID, name, startDate, endDate, memo)
+	addEvent: async function(eventID, name, startDate, endDate)
 	{
 		let newEvent = {
 			eventID: eventID,
 			name: name,
 			startDate: startDate,
 			endDate: endDate,
-			memo: memo
 		};
 
 		this.eventList.push(newEvent);

@@ -38,6 +38,7 @@ function init(server)
 
 			// 클라이언트는 join type 받으면, 자기가 가지고 있는 접속자 목록과 비교해 없으면 리스트에 새로 추가한다.
 			_.each(clients[roomID], (member) => {
+				console.log('%s에게 join', member.nickname);
 				io.to(member.sockID).emit('chat_member_change', {type: 'join', chatroom: roomID, nickname: nickname})
 			});
 			
@@ -90,11 +91,14 @@ function init(server)
 			let userID = await User.getUserID(username);
 			let nickname = await User.getNickname(username);
 
-			let userSch = await User.findOne({userID: userID});
+			let userSch = await User.findOne({_id: userID});
 			userSch.exitChatRoom(roomID);
 
 			let roomSch = await ChatRoom.findOne({_id: roomID});
-			roomScch.removeUser(userID);
+			roomSch.removeUser(userID);
+
+			// exit이 성공했음을 알린다.
+			socket.emit('exit_success', {});
 
 			console.log("[chat] %s exit from %s", username, roomName);
 
@@ -146,10 +150,10 @@ function init(server)
 			let eventName = params.eventName;
 			let startDate = params.startDate;
 			let endDate = params.endDate;
-			let memo = params.memo;
+			let allDay = params.allDay;
 
 			let calendar = await Calendar.findOne({roomID: roomID});
-			calendar.addEvent(eventID, eventName, startDate, endDate, memo);
+			calendar.addEvent(eventID, eventName, startDate, endDate, allDay);
 
 			_.each(clients[roomID], (member) => {
 				if(member.nickname !== nickname)
@@ -159,7 +163,7 @@ function init(server)
 						eventName: eventName,
 						startDate: startDate,
 						endDate: endDate,
-						memo: memo
+						allDay: allDay,
 					});
 				}
 			});
