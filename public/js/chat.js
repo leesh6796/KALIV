@@ -136,6 +136,14 @@ input.addEventListener("keyup", function(event) {
   }
 });*/
 
+function outroom()
+{
+    var out = confirm("Are you sure to go out?");
+    if(out)
+    {
+        window.location.replace('/');
+    }
+}
 function myfunction()
 {
 

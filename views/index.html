@@ -5,11 +5,13 @@
 <head>
     <title><%= title %></title>
     <link type="text/css" rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 
 <body>
     <div class = "header">
-            <i class="fa fa-bars" style="width:" onclick="openNav()"></i>
+            <i class="fa fa-bars" onclick="openNav()"></i>
                 KALIV
     </div>
     <div id="mySidenav" class="sidenav">
@@ -22,16 +24,16 @@
           
               
 
-    <div id="container">
+    
         <div id="logo">
-            <img src="/img/logo.jpg" width="100" height="80" alt="No image">
+            <img src="/img/logo.jpg" style="margin-bottom:50px;"width="150" height="120" alt="No image">
         </div>
-    </div>
+    
 
     <div id="search">
         <form onsubmit="return redirectRoom()">
-            <input type="text" id="search_box" name="keyword">
-            <input type="submit" value="search">
+            <input  type="text" id="search_box" name="keyword">
+            <button id="searchb" type="submit"><i style="font-size:20px;" class="fa fa-search" ></i></button>
         </form>
     </div>
 
@@ -49,7 +51,7 @@ $(document).ready(function() {
     $.get("/chat/get/enter/roomlist", function(roomlist) {
         for(var i=0;i< roomlist.length;i++)
         {
-            document.getElementById("mySidenav").innerHTML = document.getElementById("mySidenav").innerHTML+ '<a onclick="redirectroom('+roomlist[i]+')"><img src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png" style="height: 34px; width: 34px; margin-right:10px;"class="img-circle">'+roomlist[i]+'</a>';
+            document.getElementById("mySidenav").innerHTML = document.getElementById("mySidenav").innerHTML + '<a onclick=\"redirectroom(\''+roomlist[i]+ '\')\"><img src=\"https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png\" style=\"height: 34px; width: 34px; margin-right:10px;\" class=\"img-circle\">' + roomlist[i] + '</a>';
         }
     });
    
@@ -79,15 +81,27 @@ function closeNav() {
 
 }
 
+
+function redirectroom(roomname)
+{
+    $.get('/chat/get/my/username', function(res) {
+        let username = res;
+        $.post('/chat/enter', {roomName: roomname, username:username}, function(res) {
+            location.href = res;
+        });
+    });
+}
+
 function redirectRoom()
 {
     let roomName = $('#search_box').val();
     let username = '<%= username %>';
-
+    if(roomName !="")
+    {
     $.post('/chat/enter', {roomName: roomName, username:username}, function(res) {
         location.href = res;
     });
-
+    }
     return false;
 }
 </script>

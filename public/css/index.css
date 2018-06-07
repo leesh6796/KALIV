@@ -25,6 +25,7 @@ html, body {
     width: 100%;
     text-align: center;
     position: relatvie;
+    margin-bottom:50px;
 }
 
 #container {
@@ -40,17 +41,25 @@ html, body {
     border: 1px solid #ccc;
 }
 
+#searchb{
+  background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
 #search {
     position: fixed;
     width: 800px;
     height: 160px;
     top:50%;
     left: 50%;
-    margin-top: -120px;
+    margin-top: -90px;
     margin-left: -400px;
-    background: #fff;
+    /*background: #fff;
     border-radius: 4px;
-    border: 1px solid #ccc;
+    /*border: 1px solid #ccc;*/
 }
 
 form {
