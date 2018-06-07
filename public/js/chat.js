@@ -54,8 +54,11 @@ $(document).ready(function() {
         {
             let msg = messageList[i];
             let sender = msg.nickname === nickname ? "me" : msg.nickname;
-            insertChat(sender, msg.text, 0);
+            insertChat(sender, msg.text, 0, false);
         }
+
+        var element = document.getElementById("chatroom");
+        $("#chatroom").animate({scrollTop : element.scrollHeight });
     });
 
     socket.on('new_message', function(params) {
@@ -115,7 +118,7 @@ function formatAMPM(date) {
 }            
 
 //-- No use time. It is a javaScript effect.
-function insertChat(who, text, time){
+function insertChat(who, text, time, noScroll=false){
     if (time === undefined){
         time = 0;
     }
@@ -145,13 +148,16 @@ function insertChat(who, text, time){
                         
                     '</li>';
     }
-    setTimeout(
-        function(){ 
-            var element = document.getElementById("chatroom");                       
-            $("#chatroom").append(control).animate({scrollTop : element.scrollHeight });
+    var element = document.getElementById("chatroom"); 
+    $("#chatroom").append(control);
 
-            
-        }, time);
+    if(!noScroll)
+    {
+        setTimeout(
+            function(){ 
+                $("#chatroom").animate({scrollTop : element.scrollHeight });
+            }, time);
+    }
 
     
 }
@@ -212,7 +218,6 @@ function sendMessage()
     let text = $('#mytext').val();
     if(text !== '\n' && text !== '')
     {
-        console.log('전송');
         let params = {username:username, roomID: roomID, message:text};
         socket.emit('new_message', params);
 
