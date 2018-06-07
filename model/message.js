@@ -29,7 +29,12 @@ messageSchema.statics = {
             Text: message
         });
         await newMessage.save();
-    }
+    },
+
+    getMessages: async function(skip, count) // skip개 건너뛰고 count개 가져온다.
+    {
+
+    },
 };
 
 module.exports = db.model('message', messageSchema);

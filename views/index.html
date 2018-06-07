@@ -5,26 +5,6 @@
 <head>
     <title><%= title %></title>
     <link type="text/css" rel="stylesheet" href="/css/index.css">
-    <script src="https://use.fontawesome.com/45e03a14ce.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script>
-function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
-    document.getElementById("main").style.marginLeft = "250px";
-
-}
-
-/* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
-function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-    document.getElementById("main").style.marginLeft = "0";
-
-}
-
-
-
-</script>
-
 </head>
 
 <body>
@@ -49,12 +29,15 @@ function closeNav() {
     </div>
 
     <div id="search">
-        <form>
+        <form onsubmit="return redirectRoom()">
             <input type="text" id="search_box" name="keyword">
             <input type="submit" value="search">
         </form>
     </div>
 
+<script src="/js/jquery.js"></script>
+<script src="https://use.fontawesome.com/45e03a14ce.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <script>
 
@@ -75,18 +58,37 @@ $(document).ready(function() {
 
         if ((e.keyCode || e.which) == 13){
             myfunction();
-         document.getElementById('mytext').value = "";
+            document.getElementById('mytext').value = "";
         }
     });
     //add chatroom list
     
    
 });
-    function redirectroom(roomname)
+
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+
+}
+
+/* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft = "0";
+
+}
+
+function redirectRoom()
 {
-    $.post('/chat/enter', {roomName: roomname, username:'leesh6796'}, function(res) {
+    let roomName = $('#search_box').val();
+    let username = '<%= username %>';
+
+    $.post('/chat/enter', {roomName: roomName, username:username}, function(res) {
         location.href = res;
     });
+
+    return false;
 }
 </script>
 </body>
