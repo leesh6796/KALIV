@@ -30,7 +30,10 @@ calendarSchema.methods = {
 	},
 	removeEvent: async function(eventID)
 	{
-		this.eventList.pull({eventID: eventID});
+		this.eventList = this.eventList.filter(function( obj ) {
+  			return obj.eventID !== eventID;
+		});
+		//this.eventList.pull({eventID: eventID});
 		await this.save();
 	}
 };

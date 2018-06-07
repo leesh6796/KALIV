@@ -209,13 +209,7 @@ customButtons: {
         $("#chatmember").append(elements);
     }
 
-    $(".mytext").on("keyup", function(e){
-
-        if ((e.keyCode || e.which) == 13){
-            myfunction();
-         document.getElementById('mytext').value = "";
-        }
-    });
+    
 });
 
 
@@ -312,11 +306,7 @@ function resetChat(){
     $("ul").empty();
 }
 
-$(".mytext").on("keydown", function(e){
-    if (e.which == 13){
-        sendMessage();
-    }
-});
+
 
 $('body > div > div > div:nth-child(2) > span').click(function(){
     $(".mytext").trigger({type: 'keydown', which: 13, keyCode: 13});
@@ -339,6 +329,11 @@ input.addEventListener("keyup", function(event) {
     myfunction();
   }
 });*/
+$(".mytext").on("keydown", function(e){
+    if (e.which == 13){
+        sendMessage();
+    }
+});
 
 function outroom()
 {
