@@ -36,6 +36,7 @@ $(document).ready(function() {
     
     // 채팅방 세팅
     $.get('/chat/get/my/name', function(res) {
+        console.log(res);
         username = res.username;
         nickname = res.nickname;
         roomID = location.href.split('/')[4];
@@ -54,24 +55,31 @@ $(document).ready(function() {
         {
             let msg = messageList[i];
             let sender = msg.nickname === nickname ? "me" : msg.nickname;
-            insertChat(sender, msg.text, 0, false);
+            insertChat(sender, msg.text, 0, true);
         }
 
         var element = document.getElementById("chatroom");
-        $("#chatroom").animate({scrollTop : element.scrollHeight });
+        $("#chatroom").scrollTop(element.scrollHeight);
     });
 
     socket.on('new_message', function(params) {
         console.log(params);
         let sender = params.nickname;
+        console.log(sender);
         let text = params.text;
 
         messageList.push(params);
         messageCount++;
 
-        if(sender === nickname) sender = "me";
-
-        insertChat(sender, text, 0);
+        if(sender === nickname) 
+        {
+            sender = "me";
+            insertChat(sender, text, 0,true);
+        }
+        else
+        {
+            insertChat(sender, text, 0,false);
+        }
     });
 
     socket.on('chat_member_change', function(params) {
@@ -80,14 +88,17 @@ $(document).ready(function() {
         if(type === 'join') // 새로운 멤버가 채팅방에 접속
         {
             let newMember = params.nickname;
+
         }
         else if(type === 'exit') // 한 멤버가 퇴장
         {
             let exitMember = params.nickname;
+
         }
         else if(type === 'update') // 채팅방 처음 접속했을 때 참여자 목록 받기
         {
             let members = params.members;
+
         }
     });
 });
@@ -126,9 +137,10 @@ function insertChat(who, text, time, noScroll=false){
     var date = formatAMPM(new Date());
     
     if (who == "me"){
-        control = '<li  class="left clearfix admin_chat">' +
+        
+            control = '<li  class="left clearfix admin_chat">' +
                         
-                        '<span class="chat-img1 pull-right"><img class="img-circle" alt="User Avatar"  src="'+ me.avatar +'" />'+'<div style="text-align:center;">'+me.username+'</div></span>' 
+                        '<span class="chat-img1 pull-right"><img class="img-circle" alt="User Avatar"  src="'+ me.avatar +'" />'+'<div style="text-align:center; font-size:5px">'+nickname+'</div></span>' 
                         +
                             '<div class="bubble you clearfix">' +
                                 '<p >'+ text +'</p>' +
@@ -136,11 +148,12 @@ function insertChat(who, text, time, noScroll=false){
                         
                             '</div>'+
 
-                    '</li>';                    
+                    '</li>'; 
+                                     
     }else{
         control = '<li class="left clearfix admin_chat">' +
                         
-                        '<span class="chat-img1 pull-left"><img class="img-circle" alt="User Avatar" src="'+ you.avatar +'" /></span>' +
+                        '<span class="chat-img1 pull-left"><img class="img-circle" alt="User Avatar" src="'+ you.avatar +'" />'+'<div style="text-align:center;font-size:5px">'+who+'</div></span>' +
                             '<div class="bubble me clearfix">' +
                                 '<p>'+ text +'</p>' +
                                 '<div class="chat_time pull-right">'+date+'</div>' +
@@ -148,19 +161,25 @@ function insertChat(who, text, time, noScroll=false){
                         
                     '</li>';
     }
-    var element = document.getElementById("chatroom"); 
-    $("#chatroom").append(control);
-
-    if(!noScroll)
-    {
-        setTimeout(
-            function(){ 
-                $("#chatroom").animate({scrollTop : element.scrollHeight });
-            }, time);
-    }
 
     
+    setTimeout(
+        function(){ 
+            var element = document.getElementById("chatroom"); 
+                                  
+            $("#chatroom").append(control);//.animate({scrollTop : element.scrollHeight });
+            if(noScroll)
+            {
+                $("#chatroom").scrollTop(element.scrollHeight);
+
+            }
+            else
+            {
+                 $("#chatroom").scrollTop($("#chatroom").scrollTop());
+            }
+    })
 }
+
 
 
 
