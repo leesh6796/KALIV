@@ -8,8 +8,9 @@ var nickname = '';
 var roomID = '';
 var messageList = []; // json List
 var messageCount = 0; // json Count
-var memberset;
+var memberset = [];
 var roomname="";
+
 $(document).ready(function() {
     var elements;
     //add chat memebers
@@ -38,6 +39,10 @@ $(document).ready(function() {
         roomID = location.href.split('/')[4];
 
         socket.emit('join', {roomID: roomID, username: username});
+    });
+
+    socket.on('exit_success', function(params) {
+        location.href = '/';
     });
 
     socket.on('load_message', function(params) {
@@ -89,16 +94,18 @@ $(document).ready(function() {
         if(type === 'join') // 새로운 멤버가 채팅방에 접속
         {
             let newMember = params.nickname;
-            memberset.push(newMember);
-            makememberlist();
-
+            if(memberset.indexOf(newMember) < 0)
+            {
+                memberset.push(newMember);
+                makememberlist();
+            }
         }
         else if(type === 'exit') // 한 멤버가 퇴장
         {
             let exitMember = params.nickname;
-            memberset = removemember(memberset, exitMember);
+            let index = memberset.indexOf(exitMember);
+            memberset.splice(index, 1);
             makememberlist();
-
         }
         else if(type === 'update') // 채팅방 처음 접속했을 때 참여자 목록 받기
         {
@@ -109,21 +116,17 @@ $(document).ready(function() {
     });
 });
 
-function removemember(array, element) {
-    const index = array.indexOf(element);
-    return array.splice(index, 1);
-}
 
 function makememberlist()
 {
-
-
-for(var i=0; i< memberset.length;i++)
+    $('#chatmember').empty();
+    for(var i=0; i< memberset.length;i++)
     {
         elements = '<li class="chatmembox"><img class="chat-img2 img-circle" alt="User Avatar"  src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png"> &nbsp'+ memberset[i]+'&nbsp&nbsp <i class = "fa fa-thumbs-up"></i> &nbsp<i class = "fa fa-thumbs-down"></i></li>';
         $("#chatmember").append(elements);
     }
 }
+
 var me = {};
 me.avatar = "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png";
 me.username="me";
@@ -240,7 +243,10 @@ function outroom()
     var out = confirm("Are you sure to go out?");
     if(out)
     {
-        window.location.replace('/');
+        socket.emit('exit', {
+            roomID: roomID,
+            username: username
+        });
     }
 }
 

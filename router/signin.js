@@ -16,9 +16,7 @@ module.exports = {
 			req.session.username = username;
 			req.session.nickname = me.nickname;
 			req.session.userID = me._id;
-
-			let ridList = me.enterChatRoomList;
-			req.session.enterChatRooms = await Chat.getRoomNames(ridList);
+			
 			res.redirect('/');
 		}
 		else

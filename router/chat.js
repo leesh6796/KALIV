@@ -48,7 +48,20 @@ module.exports = {
 
 	getEnterRoomList: async function(req, res)
 	{
-		res.send(req.session.enterChatRooms);
+		let username = req.session.username;
+		let me = await User.findOne({username: username});
+		let roomList = me.enterChatRoomList;
+
+		let roomNames = [];
+
+		let i;
+		for(i=0; i<roomList.length; i++)
+		{
+			let room = await ChatRoom.findOne({_id: roomList[i]});
+			roomNames.push(room.name);
+		}
+
+		res.send(roomNames);
 	},
 
 	getNameInfo: async function(req, res)
@@ -61,7 +74,7 @@ module.exports = {
 		res.send(nameInfo);
 	},
 
-	getRoomNames: async function(roomList) // [roomID] => [roomName]
+	/*getRoomNames: async function(roomList) // [roomID] => [roomName]
 	{
 		let roomNames = [];
 
@@ -73,5 +86,5 @@ module.exports = {
 		}
 
 		return roomNames;
-	},
+	},*/
 };
