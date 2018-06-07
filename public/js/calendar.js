@@ -1,117 +1,79 @@
-// JavaScript Document
-
-// JavaScript Document
-
 $(document).ready(function() {
+  // page is ready
+      $('#calendar').fullCalendar({
+      // emphasizes business hours
 
-$(".mytext").on("keyup", function(e){
+// header
+header: {
+  left: 'prev,next today addEventButton',
+  center: 'title',
+  right: 'month,agendaWeek,agendaDay'
+},
+customButtons: {
+      addEventButton: {
+        text: 'add event',
+        click: function() {
+          var eventname = prompt('Enter a event name');
+          var dateStart = prompt('Enter a start date in YYYY-MM-DD format');
+          var dateEnd = prompt('Enter a end date in YYYY-MM-DD format');
+          var dateS = moment(dateStart);
+          var dateE = moment(dateEnd);
 
-if ((e.keyCode || e.which) == 13){
+          if (dateS.isValid() && dateE.isValid()) {
+            $('#calendar').fullCalendar('renderEvent', {
+              id: eventname+dateS,
+              title: eventname,
+              start: dateS,
+              end: dateE,
+              allDay:true
 
-var text = $(this).val();
+            
+            });
 
-if (text !== ""){
-
-insertChat("me", text);
-
-$(this).val('');
-
-}
-
-}
-
-});
-
-});
-var me = {};
-me.avatar = "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png";
-
-var you = {};
-you.avatar = "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png";
-
-function formatAMPM(date) {
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0'+minutes : minutes;
-    var strTime = hours + ':' + minutes + ' ' + ampm;
-    return strTime;
-}            
-
-//-- No use time. It is a javaScript effect.
-function insertChat(who, text, time){
-    if (time === undefined){
-        time = 0;
-    }
-    var control = "";
-    var date = formatAMPM(new Date());
-    
-    if (who == "me"){
-        control = '<li class="right clearfix">' +
-                        '<div class="msj macro">' +
-                        '<span class="avatar  chat-img1 pull-right"><img class="img-circle" style="height: 34px; width: 34px;" src="'+ me.avatar +'" /></div>' +
-                            '<div class="text text-r pull-right">' +
-                                '<p>'+ text +'</p>' +
-                                '<p><small>'+date+'</small></p>' +
-                            '</div>' +
-                        '</div>' +
-                    '</li>';                    
-    }else{
-        control = '<li class="left clearfix">' +
-                        '<div class="msj macro">' +
-                        '<span class="avatar  chat-img1 pull-left"><img class="img-circle" style="height: 34px; width: 34px;" src="'+ me.avatar +'" /></div>' +
-                            '<div class="text text-l">' +
-                                '<p>'+ text +'</p>' +
-                                '<p><small>'+date+'</small></p>' +
-                            '</div>' +
-                        '</div>' +
-                    '</li>';
-    }
-    setTimeout(
-        function(){                        
-            $("ul").append(control).scrollTop($("ul").prop('scrollHeight'));
-        }, time);
-    
-}
-
-function resetChat(){
-    $("ul").empty();
-}
-
-$(".mytext").on("keydown", function(e){
-    if (e.which == 13){
-        var text = $(this).val();
-        if (text !== ""){
-            insertChat("me", text);              
-            $(this).val('');
+            alert('Great. Now, update your database...');
+          } else {
+            alert('Invalid date.');
+          }
         }
+      }
+    },
+    eventClick: function(calEvent, jsEvent, view) {
+
+    /*alert('Event: ' + calEvent.title);
+    alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+    alert('View: ' + view.name);
+
+    // change the border color just for fun
+    $(this).css('border-color', 'red');*/
+    var remove = confirm("Do you want to remove?");
+    if(remove)
+    {
+      $('#calendar').fullCalendar('removeEvents', calEvent._id);
     }
+
+  }
+    
+  })
+      var elements;
+    //add chat memebers
+   
+    $.get("/chat/get/enter/roomlist", function(roomlist) {
+        for(var i=0;i< roomlist.length;i++)
+        {
+            document.getElementById("mySidenav").innerHTML = document.getElementById("mySidenav").innerHTML + '<a onclick=\"redirectroom(\''+roomlist[i]+ '\')\"><img src=\"https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png\" style=\"height: 34px; width: 34px; margin-right:10px;\" class=\"img-circle\">' + roomlist[i] + '</a>';
+        }
+    });
+    for(var i=0; i< 2;i++)
+    {
+        elements = '<li class="chatmembox"><img class="chat-img2 img-circle" alt="User Avatar"  src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png"> &nbsp me &nbsp&nbsp <i class = "fa fa-thumbs-up"></i> &nbsp<i class = "fa fa-thumbs-down"></i></li>';
+        $("#chatmember").append(elements);
+    }
+
+    $(".mytext").on("keyup", function(e){
+
+        if ((e.keyCode || e.which) == 13){
+            myfunction();
+         document.getElementById('mytext').value = "";
+        }
+    });
 });
-
-$('body > div > div > div:nth-child(2) > span').click(function(){
-    $(".mytext").trigger({type: 'keydown', which: 13, keyCode: 13});
-})
-
-//-- Clear Chat
-resetChat();
-
-function myfunction()
-{
-
-    var inserttext = document.getElementById('mytext').value;
-    console.log(inserttext);
-    insertChat("me",inserttext,0);
-    document.getElementById('mytext').value="";
-}
-//-- Print Messages
-/*insertChat("me", "Hello Tom...", 0);  
-insertChat("you", "Hi, Pablo", 1500);
-insertChat("me", "What would you like to talk about today?", 3500);
-insertChat("you", "Tell me a joke",7000);
-insertChat("me", "Spaceman: Computer! Computer! Do we bring battery?!", 9500);
-insertChat("you", "LOL", 12000);*/
-
-
-//-- NOTE: No use time on insertChat.

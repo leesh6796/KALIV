@@ -8,6 +8,7 @@
 <link rel="stylesheet" media="print" href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.0/fullcalendar.print.css'>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 <link href="/css/calendar.css" rel="stylesheet" >
+<!--link href="/css/chat.css" rel="stylesheet"-->
 
 </head>
 
@@ -94,12 +95,14 @@
      </ul>
      </div><!--chat_area-->
           <div class="message_write">
-       <textarea id="mytext" class="form-control mytext"  placeholder="type a message"></textarea>
-     <div class="clearfix"></div>
-     <div class="chat_bottom"><a href="#" class="pull-left upload_btn"><i class="fa fa-cloud-upload" aria-hidden="true"></i>
+       <textarea style="width:70%; margin-right: 5px;" id="mytext" class="form-control mytext pull-left"  placeholder="type a message"></textarea>
+ 
+                
+                 
+       <span style="width:25%"class="chat_bottom pull-right"><a href="#" style="margin-top:0px;" class=" upload_btn"><i class="fa fa-cloud-upload" aria-hidden="true"></i>
  Add Files</a>
- <button href="#" class="pull-right btn btn-success" onclick="myfunction()" >
- Send</button></div>
+ <button href="#" class=" btn btn-success" onclick="sendMessage()" >
+ Send</button></span></div>
      </div>
      </div>
          </div> <!--message_section-->
@@ -108,13 +111,16 @@
 </div>
 
 <script src="/js/jquery.js"></script>
-
+<script src="/js/socket.io.js"></script>
 <script src="https://use.fontawesome.com/45e03a14ce.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.0/fullcalendar.min.js"></script>
 
-<script>
+<script src="/js/chat.js"></script>
+<script src="/js/calendar.js"></script>
+
+<!--script>
   $(document).ready(function() {
   // page is ready
       $('#calendar').fullCalendar({
@@ -336,7 +342,7 @@ function redirectroom(roomname)
         });
     });
 }
-</script>
+</script-->
 
 </body>
 </html>

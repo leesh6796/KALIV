@@ -6,10 +6,10 @@ var socket = io();
 var username = '';
 var nickname = '';
 var roomID = '';
-var messageList; // json List
+var messageList = []; // json List
 var messageCount = 0; // json Count
 var memberset;
-
+var roomname="";
 $(document).ready(function() {
     var elements;
     //add chat memebers
@@ -32,7 +32,7 @@ $(document).ready(function() {
     
     // 채팅방 세팅
     $.get('/chat/get/my/name', function(res) {
-        console.log(res);
+        //console.log(res);
         username = res.username;
         nickname = res.nickname;
         roomID = location.href.split('/')[4];
@@ -58,10 +58,15 @@ $(document).ready(function() {
         $("#chatroom").scrollTop(element.scrollHeight);
     });
 
+    socket.on('room_name', function(params) {
+        let roomName = params;
+        roomname = roomName;
+        console.log(roomname);
+        document.getElementById("chatroomname").innerHTML = roomname;
+    });
+
     socket.on('new_message', function(params) {
-        console.log(params);
         let sender = params.nickname;
-        console.log(sender);
         let text = params.text;
 
         messageList.push(params);
