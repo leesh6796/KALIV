@@ -39,7 +39,6 @@ $(document).ready(function() {
         console.log(res);
         username = res.username;
         nickname = res.nickname;
-        console.log(nickname);
         roomID = location.href.split('/')[4];
 
         socket.emit('join', {roomID: roomID, username: username});
@@ -56,8 +55,11 @@ $(document).ready(function() {
         {
             let msg = messageList[i];
             let sender = msg.nickname === nickname ? "me" : msg.nickname;
-            insertChat(sender, msg.text, 0);
+            insertChat(sender, msg.text, 0, true);
         }
+
+        var element = document.getElementById("chatroom");
+        $("#chatroom").scrollTop(element.scrollHeight);
     });
 
     socket.on('new_message', function(params) {
@@ -69,9 +71,15 @@ $(document).ready(function() {
         messageList.push(params);
         messageCount++;
 
-        if(sender === nickname) sender = "me";
-
-        insertChat(sender, text, 0);
+        if(sender === nickname) 
+        {
+            sender = "me";
+            insertChat(sender, text, 0,true);
+        }
+        else
+        {
+            insertChat(sender, text, 0,false);
+        }
     });
 
     socket.on('chat_member_change', function(params) {
@@ -80,14 +88,17 @@ $(document).ready(function() {
         if(type === 'join') // 새로운 멤버가 채팅방에 접속
         {
             let newMember = params.nickname;
+
         }
         else if(type === 'exit') // 한 멤버가 퇴장
         {
             let exitMember = params.nickname;
+
         }
         else if(type === 'update') // 채팅방 처음 접속했을 때 참여자 목록 받기
         {
             let members = params.members;
+
         }
     });
 });
@@ -118,7 +129,7 @@ function formatAMPM(date) {
 }            
 
 //-- No use time. It is a javaScript effect.
-function insertChat(who, text, time){
+function insertChat(who, text, time, noScroll=false){
     if (time === undefined){
         time = 0;
     }
@@ -129,7 +140,7 @@ function insertChat(who, text, time){
         
             control = '<li  class="left clearfix admin_chat">' +
                         
-                        '<span class="chat-img1 pull-right"><img class="img-circle" alt="User Avatar"  src="'+ me.avatar +'" />'+'<div style="text-align:center;">'+nickname+'</div></span>' 
+                        '<span class="chat-img1 pull-right"><img class="img-circle" alt="User Avatar"  src="'+ me.avatar +'" />'+'<div style="text-align:center; font-size:5px">'+nickname+'</div></span>' 
                         +
                             '<div class="bubble you clearfix">' +
                                 '<p >'+ text +'</p>' +
@@ -142,7 +153,7 @@ function insertChat(who, text, time){
     }else{
         control = '<li class="left clearfix admin_chat">' +
                         
-                        '<span class="chat-img1 pull-left"><img class="img-circle" alt="User Avatar" src="'+ you.avatar +'" />'+'<div style="text-align:center;">'+who+'</div></span>' +
+                        '<span class="chat-img1 pull-left"><img class="img-circle" alt="User Avatar" src="'+ you.avatar +'" />'+'<div style="text-align:center;font-size:5px">'+who+'</div></span>' +
                             '<div class="bubble me clearfix">' +
                                 '<p>'+ text +'</p>' +
                                 '<div class="chat_time pull-right">'+date+'</div>' +
@@ -150,17 +161,25 @@ function insertChat(who, text, time){
                         
                     '</li>';
     }
+
+    
     setTimeout(
         function(){ 
             var element = document.getElementById("chatroom"); 
-            $("#chatroom").scrollTop(element.scrollHeight);                      
+                                  
             $("#chatroom").append(control);//.animate({scrollTop : element.scrollHeight });
+            if(noScroll)
+            {
+                $("#chatroom").scrollTop(element.scrollHeight);
 
-            
-        }, time);
-
-    
+            }
+            else
+            {
+                 $("#chatroom").scrollTop($("#chatroom").scrollTop());
+            }
+    })
 }
+
 
 
 
