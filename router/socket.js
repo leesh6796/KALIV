@@ -26,6 +26,7 @@ function init(server)
 		socket.on('join', async function(params)
 		{
 			let i;
+			let roomName = '';
 			let roomID = params.roomID;
 			let username = params.username;
 			let nickname = await User.getNickname(username);
@@ -45,6 +46,10 @@ function init(server)
 
 			// 새로 접속한 클라이언트에게는 접속자 모두를 보내준다.
 			let room = await ChatRoom.findOne({_id: roomID});
+			roomName = room.name;
+
+			socket.emit('room_name', roomName);
+
 			let userList = room.userList;
 			let members = [];
 			for(i=0; i<userList.length; i++)
@@ -127,6 +132,52 @@ function init(server)
 			_.each(clients[roomID], (member) => {
 				// 특정 소켓에게 보낼 때에는 io.to(sockID).emit 사용한다.
 				io.to(member.sockID).emit('new_message', {type: 0, nickname: nickname, text: message, timestamp: timestamp});
+			});
+		});
+
+		socket.on('new_event', async function(params)
+		{
+			let nickname = params.nickname;
+			let roomID = params.roomID;
+			let eventID = params.eventID;
+			let eventName = params.eventName;
+			let startDate = params.startDate;
+			let endDate = params.endDate;
+			let memo = params.memo;
+
+			let calendar = await Calendar.findOne({roomID: roomID});
+			calendar.addEvent(eventID, eventName, startDate, endDate, memo);
+
+			_.each(clients[roomID], (member) => {
+				if(member.nickname !== nickname)
+				{
+					io.to(member.sockID).emit('new_event', {
+						eventID: eventID,
+						eventName: eventName,
+						startDate: startDate,
+						endDate: endDate,
+						memo: memo
+					});
+				}
+			});
+		});
+
+		socket.on('remove_event', async function(params)
+		{
+			let nickname = params.nickname;
+			let roomID = params.roomID;
+			let eventID = params.eventID;
+
+			let calendar = await Calendar.findOne({roomID: roomID});
+			calendar.removeEvent(eventID, eventName, startDate, endDate, memo);
+
+			_.each(clients[roomID], (member) => {
+				if(member.nickname !== nickname)
+				{
+					io.to(member.sockID).emit('remove_event', {
+						eventID: eventID,
+					});
+				}
 			});
 		});
 	});

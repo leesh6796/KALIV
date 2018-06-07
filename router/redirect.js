@@ -1,3 +1,5 @@
+var ChatRoom = require('./model').chatRoom;
+
 module.exports = {
     getIndex : function(req, res)
     {
@@ -51,17 +53,33 @@ module.exports = {
         else
         	res.redirect('/signin');
     },
-    getChat : function(req, res)
+    getChat : async function(req, res)
     {
     	if(req.session.signin)
-        	res.render('chat.html',
+        {
+            let roomID = req.params.roomID;
+            let room = await ChatRoom.findOne({_id: roomID});
+            if(room !== null)
+            {
+                if(room.type === 0) // normal chat room
                 {
-                    title: 'KALIV chat',
-                    username: req.session.username,
-                    roomID: req.params.roomID,
-                });
-        else
-        	res.redirect('/signin');
+                    res.render('chat.html', {
+                        title: 'KALIV chat',
+                        username: req.session.username,
+                        roomID: req.params.roomID,
+                    });
+                }
+                else if(room.type === 1)
+                {
+                    res.render('calendar.html', {
+                        title: 'KALIV chat',
+                        username: req.session.username,
+                        roomID: req.params.roomID,
+                    });
+                }
+            }
+        }
+        else res.redirect('/signin');
     },
     getCalendar : function(req, res)
     {
@@ -70,6 +88,7 @@ module.exports = {
                 {
                     title: 'KALIV Calendar',
                     username: req.session.username,
+                    roomID: req.params.roomID,
                 });
         else
         	res.redirect('/signin');

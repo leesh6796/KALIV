@@ -12,7 +12,7 @@ module.exports = {
 		if(found === null)
 		{
 			var newCalendar = new Calendar();
-			newCalendar.parentRoom = roomID;
+			newCalendar.roomID = roomID;
 			newCalendar.eventList = [];
 			newCalendar.save();
 
@@ -22,5 +22,7 @@ module.exports = {
 					room.save();
 				});
 		}
+
+		res.redirect('/');
 	},
 };

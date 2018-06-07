@@ -4,6 +4,7 @@ var redirector = require('./redirect');
 var signup = require('./signup');
 var signin = require('./signin');
 var chat = require('./chat');
+var calendar = require('./calendar');
 var dev = require('./dev');
 
 var router = express.Router();
@@ -30,7 +31,7 @@ router.route('/signin/fail').get(redirector.getSignInFail);
 
 router.route('/chat/enter').post(chat.enterRoom);
 router.route('/chat/:roomID').get(redirector.getChat);
-router.route('/chat/:roomID/bind/calendar').get(redirector.getChat);
+router.route('/chat/:roomID/bind/calendar').get(calendar.bindCalendar);
 router.route('/chat/get/enter/roomlist').get(chat.getEnterRoomList);
 router.route('/chat/get/my/name').get(chat.getNameInfo);
 
