@@ -8,7 +8,7 @@ var nickname = '';
 var roomID = '';
 var messageList; // json List
 var messageCount = 0; // json Count
-
+var members;
 
 $(document).ready(function() {
     var elements;
