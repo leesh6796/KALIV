@@ -9,6 +9,7 @@ var chatRoomSchema = new Schema({
     userList: [{type: Schema.Types.ObjectId, ref: 'user'}],
     //messageList: [{type: Schema.Types.ObjectId, ref: 'message'}],
     creationDate: {type: Date, default: Date.now},
+    calendar: {type: Schema.Types.ObjectId, ref: 'calendar'}
 });
 
 chatRoomSchema.methods = {

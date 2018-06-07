@@ -25,6 +25,7 @@ function init(server)
 
 		socket.on('join', async function(params)
 		{
+			let i;
 			let roomID = params.roomID;
 			let username = params.username;
 			let nickname = await User.getNickname(username);
@@ -43,12 +44,18 @@ function init(server)
 			clients[roomID].push({sockID: socket.id, nickname: nickname});
 
 			// 새로 접속한 클라이언트에게는 접속자 모두를 보내준다.
-			let memberList = _.pluck(clients[roomID], 'nickname');
-			socket.emit('chat_member_change', {type:'update', chatroom: roomID, members: memberList});
+			let room = await ChatRoom.findOne({_id: roomID});
+			let userList = room.userList;
+			let members = [];
+			for(i=0; i<userList.length; i++)
+			{
+				let nick = await User.getNicknameById(userList[i]);
+				members.push(nick);
+			}
+			socket.emit('chat_member_change', {type:'update', chatroom: roomID, members: members});
 
 			let foundMessages = await Message.getMessages(roomID, 0);
 			let messages = [];
-			let i;
 
 			for(i=0; i<foundMessages.length; i++)
 			{

@@ -29,7 +29,8 @@ router.route('/signin/auth').post(signin.postSignIn);
 router.route('/signin/fail').get(redirector.getSignInFail);
 
 router.route('/chat/enter').post(chat.enterRoom);
-router.route('/chat/:roomID').get(redirector.getChat)
+router.route('/chat/:roomID').get(redirector.getChat);
+router.route('/chat/:roomID/bind/calendar').get(redirector.getChat);
 router.route('/chat/get/enter/roomlist').get(chat.getEnterRoomList);
 router.route('/chat/get/my/name').get(chat.getNameInfo);
 
