@@ -8,7 +8,7 @@ var nickname = '';
 var roomID = '';
 var messageList; // json List
 var messageCount = 0; // json Count
-var members;
+var memberset;
 
 $(document).ready(function() {
     var elements;
@@ -20,11 +20,7 @@ $(document).ready(function() {
             document.getElementById("mySidenav").innerHTML = document.getElementById("mySidenav").innerHTML + '<a onclick=\"redirectroom(\''+roomlist[i]+ '\')\"><img src=\"https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png\" style=\"height: 34px; width: 34px; margin-right:10px;\" class=\"img-circle\">' + roomlist[i] + '</a>';
         }
     });
-    for(var i=0; i< 2;i++)
-    {
-        elements = '<li class="chatmembox"><img class="chat-img2 img-circle" alt="User Avatar"  src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png"> &nbsp me &nbsp&nbsp <i class = "fa fa-thumbs-up"></i> &nbsp<i class = "fa fa-thumbs-down"></i></li>';
-        $("#chatmember").append(elements);
-    }
+    
 
     $(".mytext").on("keyup", function(e){
 
@@ -88,22 +84,41 @@ $(document).ready(function() {
         if(type === 'join') // 새로운 멤버가 채팅방에 접속
         {
             let newMember = params.nickname;
+            memberset.push(newMember);
+            makememberlist();
 
         }
         else if(type === 'exit') // 한 멤버가 퇴장
         {
             let exitMember = params.nickname;
+            memberset = removemember(memberset, exitMember);
+            makememberlist();
 
         }
         else if(type === 'update') // 채팅방 처음 접속했을 때 참여자 목록 받기
         {
             let members = params.members;
+            memberset = members;
+            makememberlist();
         }
     });
 });
 
+function removemember(array, element) {
+    const index = array.indexOf(element);
+    return array.splice(index, 1);
+}
+
+function makememberlist()
+{
 
 
+for(var i=0; i< memberset.length;i++)
+    {
+        elements = '<li class="chatmembox"><img class="chat-img2 img-circle" alt="User Avatar"  src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png"> &nbsp'+ memberset[i]+'&nbsp&nbsp <i class = "fa fa-thumbs-up"></i> &nbsp<i class = "fa fa-thumbs-down"></i></li>';
+        $("#chatmember").append(elements);
+    }
+}
 var me = {};
 me.avatar = "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png";
 me.username="me";
