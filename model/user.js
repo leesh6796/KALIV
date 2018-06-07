@@ -33,6 +33,12 @@ userSchema.methods = {
         this.enterChatRoomList.push(new mongoose.Types.ObjectId(roomID));
         await this.save();
     },
+
+    exitChatRoom: async function(roomID)
+    {
+        this.enterChatRoomList.pull(roomID);
+        await this.save();
+    },
 };
 
 userSchema.statics = {

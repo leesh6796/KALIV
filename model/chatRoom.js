@@ -32,7 +32,13 @@ chatRoomSchema.methods = {
     addUser: async function(userID)
     {
     	this.userList.push(userID);
-    	this.save();
+    	await this.save();
+    },
+
+    removeUser: async function(userID)
+    {
+        this.userList.pull(userID);
+        await this.save();
     },
 };
 

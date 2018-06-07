@@ -9,6 +9,12 @@ module.exports = {
 		let username = req.body.username.toString();
 		let userID = await User.getUserID(username);
 
+		if(roomName === '') // 공백은 실행 안되게 한다.
+		{
+			res.send('/');
+			return;
+		}
+
 		let isOverlap = await ChatRoom.isOverlap(roomName);
 		if(!isOverlap) // 없으면 새로 만들어야 한다.
 		{

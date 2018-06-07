@@ -8,12 +8,12 @@ var _ = require('underscore');
 
 disconnect : 채팅방에서 퇴장한다 => socket의 접속자 리스트에서 삭제
 exit : 채팅방에서 퇴장한다 => socket의 접속자 리스트, DB의 참가자 목록에서 삭제
-join {roomID: Number, username: String} : 채팅방에 입장한다. DB에 추가하지 않는다. socket의 접속자 리스트에만 추가한다.
-new_message {chatroom: Integer, username: String, msg: String} : 클라이언트가 새로운 메세지를 보낸다.
+join {roomID: Number, nickname: String} : 채팅방에 입장한다. DB에 추가하지 않는다. socket의 접속자 리스트에만 추가한다.
+new_message {chatroom: Integer, nickname: String, msg: String} : 클라이언트가 새로운 메세지를 보낸다.
 */
 
 
-var clients = {}; // chatroom id를 key로 가지고, value는 {sockID: SocketID, username: String} list
+var clients = {}; // chatroom id를 key로 가지고, value는 {sockID: SocketID, nickname: String} list
 
 function init(server)
 {
@@ -23,7 +23,7 @@ function init(server)
 	{
 		console.log("[chat] Socket Connected id = " + socket.id);
 
-		socket.on('join', async function(params) // 유저 목록은 ajax로 db에 직접 요청하자
+		socket.on('join', async function(params)
 		{
 			let roomID = params.roomID;
 			let username = params.username;
@@ -40,13 +40,41 @@ function init(server)
 			});
 			
 			// clients[roomID]에 접속한 client 추가
-			clients[roomID].push({sockID: socket.id, username: nickname});
+			clients[roomID].push({sockID: socket.id, nickname: nickname});
 
 			// 새로 접속한 클라이언트에게는 접속자 모두를 보내준다.
-			let memberList = _.pluck(clients[roomID], 'username');
+			let memberList = _.pluck(clients[roomID], 'nickname');
 			socket.emit('chat_member_change', {type:'update', chatroom: roomID, members: memberList});
 
+			let messages = await Message.getMessages(roomID, 0);
+			socket.emit('load_message', messages);
+
 			console.log(clients);
+		});
+
+		socket.on('exit', async function(params) // 채팅방 퇴장
+		{
+			let roomID = params.roomID;
+			let roomName = await ChatRoom.findRoomName(roomID);
+			let username = params.username;
+			let userID = await User.getUserID(username);
+			let nickname = await User.getNickname(username);
+
+			let userSch = await User.findOne({userID: userID});
+			userSch.exitChatRoom(roomID);
+
+			let roomSch = await ChatRoom.findOne({_id: roomID});
+			roomScch.removeUser(userID);
+
+			console.log("[chat] %s exit from %s", username, roomName);
+
+			clients[roomID] = _.without(clients[roomID], _.findWhere(clients[roomID], {sockID: socket.id}));
+			console.log(clients[roomID]);
+
+			// 클라이언트는 exit type 받으면, 자기가 가지고 있는 접속자 목록과 비교해 있으면 리스트에서 지운다.
+			_.each(clients[roomID], (member) => {
+				io.to(member.sockID).emit('chat_member_change', {type: 'exit', chatroom: roomID, nickname: nickname})
+			});
 		});
 
 		socket.on('disconnect', function() // 퇴장하면서 연결된 채팅방 모두 접속 끊는다.
@@ -55,9 +83,11 @@ function init(server)
 
 			_.each(clients, function(room, roomID) // val, key
 			{
-				clients[roomID] = _.without(room, _.findWhere(room, {id: socket.id}));
-				console.log('after');
+				clients[roomID] = _.without(room, _.findWhere(room, {sockID: socket.id}));
 			});
+
+			console.log('clients list');
+			console.log(clients);
 		});
 
 		socket.on('new_message', async function(params)
