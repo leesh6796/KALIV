@@ -118,6 +118,19 @@ $(document).ready(function() {
       let eventlist = params;
       events = eventlist;
       console.log(events);
+      for(var i=0;i<events.length;i++)
+      {
+        $('#calendar').fullCalendar('renderEvent', {
+              id: events[i].eventID,
+              title: events[i].name,
+              start: events[i].startDate,
+              end: events[i].endDate,
+              allDay: true
+              
+
+            
+            });
+      }
     });
     
     $('#calendar').fullCalendar({
@@ -172,7 +185,8 @@ customButtons: {
     if(remove)
     {
       $('#calendar').fullCalendar('removeEvents', calEvent._id);
-      var event ={nickname: nickname, roomID: roomID, eventId: calEvent._id};
+      var event ={nickname: nickname, roomID: roomID, eventID: calEvent._id};
+      console.log(event);
       socket.emit('remove_event',event)
     }
 
