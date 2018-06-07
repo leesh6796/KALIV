@@ -2,7 +2,9 @@
 
 // JavaScript Document
 
-
+var socket = io();
+var username = '';
+var roomID = '';
 
 
 $(document).ready(function() {
@@ -28,10 +30,24 @@ $(document).ready(function() {
          document.getElementById('mytext').value = "";
         }
     });
-    //add chatroom list
     
-   
+    // 채팅방 세팅
+    $.get('/chat/get/my/username', function(res) {
+        username = res;
+        roomID = location.href.split('/')[4];
+
+        socket.emit('join', {roomID: roomID, username: username});
+    });
+
+    socket.on('new_message', function(params) {
+        let nickname = params.nickname;
+        let message = params.message;
+        $('#messages').append('<li>' + nickname + ' : ' + message + '</li>');
+    });
 });
+
+
+
 var me = {};
 me.avatar = "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png";
 me.username="me";
@@ -189,10 +205,3 @@ insertChat("you", "LOL", 12000);*/
 
 
 //-- NOTE: No use time on insertChat.
-
-function test()
-{
-    $.post('/chat/enter', {roomName: 'First Chat Room', username:'leesh6796'}, function(res) {
-        location.href = res;
-    });
-}

@@ -68,6 +68,7 @@ module.exports = {
     	if(req.session.signin)
         	res.render('calendar.html',
                 {
+                    title: 'KALIV Calendar',
                     username: req.session.username,
                 });
         else
