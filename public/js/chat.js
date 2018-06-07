@@ -4,6 +4,7 @@
 
 var socket = io();
 var username = '';
+var nickname = '';
 var roomID = '';
 var messageList; // json List
 var messageCount = 0; // json Count
@@ -28,14 +29,15 @@ $(document).ready(function() {
     $(".mytext").on("keyup", function(e){
 
         if ((e.keyCode || e.which) == 13){
-            myfunction();
+            sendMessage();
          document.getElementById('mytext').value = "";
         }
     });
     
     // 채팅방 세팅
-    $.get('/chat/get/my/username', function(res) {
-        username = res;
+    $.get('/chat/get/my/name', function(res) {
+        username = res.username;
+        nickname = res.nickname;
         roomID = location.href.split('/')[4];
 
         socket.emit('join', {roomID: roomID, username: username});
@@ -43,14 +45,30 @@ $(document).ready(function() {
 
     socket.on('load_message', function(params) {
         let messages = params;
+
+        messageList = messages;
+        messageCount = messageList.length;
+
+        let i;
+        for(i=0; i<messageList.length; i++)
+        {
+            let msg = messageList[i];
+            let sender = msg.nickname === nickname ? "me" : msg.nickname;
+            insertChat(sender, msg.text, 0);
+        }
     });
 
     socket.on('new_message', function(params) {
-        let nickname = params.nickname;
-        let message = params.message;
+        console.log(params);
+        let sender = params.nickname;
+        let text = params.text;
 
         messageList.push(params);
         messageCount++;
+
+        if(sender === nickname) sender = "me";
+
+        insertChat(sender, text, 0);
     });
 
     socket.on('chat_member_change', function(params) {
@@ -64,7 +82,7 @@ $(document).ready(function() {
         {
             let exitMember = params.nickname;
         }
-        else if(type === 'update') // 채팅방 처음 접속했을 때 참여자 목록 받
+        else if(type === 'update') // 채팅방 처음 접속했을 때 참여자 목록 받기
         {
             let members = params.members;
         }
@@ -147,11 +165,7 @@ function resetChat(){
 
 $(".mytext").on("keydown", function(e){
     if (e.which == 13){
-        var text = $(this).val();
-        if (text !== ""){
-            insertChat("me", text);              
-            $(this).val('');
-        }
+        sendMessage();
     }
 });
 
@@ -185,23 +199,31 @@ function outroom()
         window.location.replace('/');
     }
 }
-function myfunction()
-{
 
-    var inserttext = document.getElementById('mytext').value;
+function sendMessage()
+{
+    /*var inserttext = document.getElementById('mytext').value;
     console.log(inserttext);
     if(inserttext != '\n' && inserttext !="")
     {
     insertChat("me",inserttext,0);
     document.getElementById('mytext').value="";
-    }
+    }*/
+    let text = $('#mytext').val();
+    if(text !== '\n' && text !== '')
+    {
+        console.log('전송');
+        let params = {username:username, roomID: roomID, message:text};
+        socket.emit('new_message', params);
 
+        $('#mytext').val('');
+    }
 }
 
 function redirectroom(roomname)
 {
-    $.get('/chat/get/my/username', function(res) {
-        let username = res;
+    $.get('/chat/get/my/name', function(res) {
+        let username = res.username;
         $.post('/chat/enter', {roomName: roomname, username:username}, function(res) {
             location.href = res;
         });

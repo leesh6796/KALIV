@@ -46,7 +46,22 @@ function init(server)
 			let memberList = _.pluck(clients[roomID], 'nickname');
 			socket.emit('chat_member_change', {type:'update', chatroom: roomID, members: memberList});
 
-			let messages = await Message.getMessages(roomID, 0);
+			let foundMessages = await Message.getMessages(roomID, 0);
+			let messages = [];
+			let i;
+
+			for(i=0; i<foundMessages.length; i++)
+			{
+				let senderID = foundMessages[i].sender;
+				let nick = await User.getNicknameById(senderID)
+
+				messages.push({
+					nickname: nick,
+					text: foundMessages[i].Text,
+					timestamp: foundMessages[i].timestamp
+				});
+			}
+
 			socket.emit('load_message', messages);
 
 			console.log(clients);
@@ -104,7 +119,7 @@ function init(server)
 
 			_.each(clients[roomID], (member) => {
 				// 특정 소켓에게 보낼 때에는 io.to(sockID).emit 사용한다.
-				io.to(member.sockID).emit('new_message', {type: 0, nickname: nickname, message: message});
+				io.to(member.sockID).emit('new_message', {type: 0, nickname: nickname, text: message, timestamp: timestamp});
 			});
 		});
 	});

@@ -31,8 +31,7 @@ router.route('/signin/fail').get(redirector.getSignInFail);
 router.route('/chat/enter').post(chat.enterRoom);
 router.route('/chat/:roomID').get(redirector.getChat)
 router.route('/chat/get/enter/roomlist').get(chat.getEnterRoomList);
-router.route('/chat/get/my/username').get(chat.getUsername);
-router.route('/chat/get/my/nickname').get(chat.getNickname);
+router.route('/chat/get/my/name').get(chat.getNameInfo);
 
 router.route('/dev/process').post(dev.commandProcess);
 

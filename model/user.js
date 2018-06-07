@@ -99,6 +99,20 @@ userSchema.statics = {
         }
     },
 
+    getNicknameById : async function(userID)
+    {
+        try
+        {
+            let res = await this.findOne({_id: userID});
+            if(res !== null) return res.nickname;
+            else return '';
+        }
+        catch(err)
+        {
+            console.log(err);
+        }
+    },
+
     getUserID : async function(username)
     {
         try

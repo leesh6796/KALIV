@@ -51,14 +51,14 @@ module.exports = {
 		res.send(req.session.enterChatRooms);
 	},
 
-	getUsername: async function(req, res)
+	getNameInfo: async function(req, res)
 	{
-		res.send(req.session.username);
-	},
+		let nameInfo = {
+			username: req.session.username,
+			nickname: req.session.nickname
+		};
 
-	getNickname: async function(req, res)
-	{
-		res.send(req.session.nickname);
+		res.send(nameInfo);
 	},
 
 	getRoomNames: async function(roomList) // [roomID] => [roomName]

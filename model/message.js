@@ -52,9 +52,9 @@ messageSchema.statics = {
     {
         // 전체 메세지가 115개고, 100개를 가지고 있으면, 앞에 15개만 보여주는 식
         let docCount = await this.count({});
-        const perPage = 100;
-        let skip = (docCount - nowCount) < 100 ? 0 : (docCount - nowCount - 100);
-        let N = (docCount - nowCount) < 100 ? (docCount - nowCount) : perPage;
+        const perPage = 1000;
+        let skip = (docCount - nowCount) < perPage ? 0 : (docCount - nowCount - perPage);
+        let N = (docCount - nowCount) < perPage ? (docCount - nowCount) : perPage;
 
         let messages = await this.find({chatRoom: roomID}).skip(skip).limit(N);
         return messages;

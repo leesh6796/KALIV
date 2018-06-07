@@ -84,8 +84,8 @@ function closeNav() {
 
 function redirectroom(roomname)
 {
-    $.get('/chat/get/my/username', function(res) {
-        let username = res;
+    $.get('/chat/get/my/name', function(res) {
+        let username = res.username;
         $.post('/chat/enter', {roomName: roomname, username:username}, function(res) {
             location.href = res;
         });
