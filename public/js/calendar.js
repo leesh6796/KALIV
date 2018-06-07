@@ -10,7 +10,7 @@ var messageList = []; // json List
 var messageCount = 0; // json Count
 var memberset = [];
 var roomname="";
-
+var events =[];
 $(document).ready(function() {
     var elements;
     //add chat memebers
@@ -115,8 +115,11 @@ $(document).ready(function() {
         }
     });
     socket.on('load_event', function(params) {
-      console.log(params);
+      let eventlist = params;
+      events = eventlist;
+      console.log(events);
     });
+    
     $('#calendar').fullCalendar({
       // emphasizes business hours
 
@@ -148,10 +151,11 @@ customButtons: {
             
             });
             
-            var event ={nickname: nickname, roomID: roomID, eventId: eventid, eventName: eventname, startDate: dateS, endDate:dateE, allDay:true}
-            socket.emit('new_event',event)
+            var event ={nickname: nickname, roomID: roomID, eventID: eventid, eventName: eventname, startDate: dateS, endDate:dateE, allDay:true}
             console.log(event);
-            alert('Great. Now, update your database...');
+            socket.emit('new_event',event);
+            console.log('aa');
+            //alert('Great. Now, update your database...');
           } else {
             alert('Invalid date.');
           }
@@ -177,6 +181,7 @@ customButtons: {
   }
     
   });
+
       var elements;
     //add chat memebers
    
