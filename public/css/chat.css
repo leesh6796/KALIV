@@ -132,7 +132,7 @@
    border-radius: 0;
    margin-top: 0;
    padding: 0;
-   width: 100%;
+   width: 200px;
    }
    .all_conversation ul li {
    border-bottom: 1px solid #dddddd;
@@ -219,7 +219,7 @@
 }
 .chat_area {
   float: left;
-  height: 300px;
+  height: 400px;
   
   overflow-x: hidden;
   overflow-y: auto;
@@ -227,7 +227,7 @@
   width: 100%;
 }
 #chatroom{
-  height:300px;
+  height:400px;
   overflow:scroll;
 }
 .chat_area li {
@@ -246,6 +246,7 @@
   width: 40px;
 }
 .chatmembox{
+  width:100%;
   margin-top: :10px;
   margin-bottom: :10px;
 }
