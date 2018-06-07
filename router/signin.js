@@ -1,5 +1,5 @@
 var User = require('./model').user;
-var Chat = require('./Chat');
+var Chat = require('./chat');
 
 module.exports = {
 	postSignIn : async function(req, res)
