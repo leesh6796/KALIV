@@ -5,6 +5,8 @@
 var socket = io();
 var username = '';
 var roomID = '';
+var messageList; // json List
+var messageCount = 0; // json Count
 
 
 $(document).ready(function() {
@@ -39,10 +41,33 @@ $(document).ready(function() {
         socket.emit('join', {roomID: roomID, username: username});
     });
 
+    socket.on('load_message', function(params) {
+        let messages = params;
+    });
+
     socket.on('new_message', function(params) {
         let nickname = params.nickname;
         let message = params.message;
-        $('#messages').append('<li>' + nickname + ' : ' + message + '</li>');
+
+        messageList.push(params);
+        messageCount++;
+    });
+
+    socket.on('chat_member_change', function(params) {
+        let type = params.type;
+
+        if(type === 'join') // 새로운 멤버가 채팅방에 접속
+        {
+            let newMember = params.nickname;
+        }
+        else if(type === 'exit') // 한 멤버가 퇴장
+        {
+            let exitMember = params.nickname;
+        }
+        else if(type === 'update') // 채팅방 처음 접속했을 때 참여자 목록 받
+        {
+            let members = params.members;
+        }
     });
 });
 
