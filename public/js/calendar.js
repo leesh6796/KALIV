@@ -150,7 +150,7 @@ customButtons: {
           var dateStart = prompt('Enter a start date in YYYY-MM-DD format');
           var dateEnd = prompt('Enter a end date in YYYY-MM-DD format');
           var dateS = moment(dateStart);
-          var dateE = moment(dateEnd);
+          var dateE = moment(dateEnd).add(24, 'hours')
           var eventid = eventname+dateS;
           if (dateS.isValid() && dateE.isValid()) {
             $('#calendar').fullCalendar('renderEvent', {
