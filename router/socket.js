@@ -84,7 +84,7 @@ function init(server)
 			if(room.type === 1)
 			{
 				let cal = await Calendar.findOne({roomID: roomID});
-				socket.emit('load_event', cal.eventList);
+				if(cal.eventList.length > 0) socket.emit('load_event', cal.eventList);
 			}
 
 			// ignore list를 보내준다.
@@ -164,7 +164,6 @@ function init(server)
 
 		socket.on('new_event', async function(params)
 		{
-			console.log('진입');
 			let nickname = params.nickname;
 			let roomID = params.roomID;
 			let eventID = params.eventID;
@@ -173,21 +172,28 @@ function init(server)
 			let endDate = params.endDate;
 			let allDay = params.allDay;
 
-			let calendar = await Calendar.findOne({roomID: roomID});
-			calendar.addEvent(eventID, eventName, startDate, endDate, allDay);
+			let cal = await Calendar.findOne({roomID: roomID});
+			if(cal !== null)
+			{
+				cal.addEvent(eventID, eventName, startDate, endDate, allDay);
 
-			_.each(clients[roomID], (member) => {
-				if(member.nickname !== nickname)
-				{
-					io.to(member.sockID).emit('new_event', {
-						eventID: eventID,
-						eventName: eventName,
-						startDate: startDate,
-						endDate: endDate,
-						allDay: allDay,
-					});
-				}
-			});
+				_.each(clients[roomID], (member) => {
+					if(member.nickname !== nickname)
+					{
+						io.to(member.sockID).emit('new_event', {
+							eventID: eventID,
+							eventName: eventName,
+							startDate: startDate,
+							endDate: endDate,
+							allDay: allDay,
+						});
+					}
+				});
+			}
+			else
+			{
+				console.log("null이다.");
+			}
 		});
 
 		socket.on('remove_event', async function(params)

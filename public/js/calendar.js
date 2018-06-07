@@ -152,9 +152,7 @@ customButtons: {
             });
             
             var event ={nickname: nickname, roomID: roomID, eventID: eventid, eventName: eventname, startDate: dateS, endDate:dateE, allDay:true}
-            console.log(event);
             socket.emit('new_event',event);
-            console.log('aa');
             //alert('Great. Now, update your database...');
           } else {
             alert('Invalid date.');

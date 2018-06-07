@@ -38,8 +38,6 @@ module.exports = {
 
 				let me = await User.findOne({username:username});
 				await me.enterChatRoom(room._id);
-
-				req.session.enterChatRooms.push(roomName);
 			}
 			//res.send('/chat/'+ room._id);
 			res.send('/chat/'+ room._id);
