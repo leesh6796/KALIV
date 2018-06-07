@@ -37,10 +37,7 @@ function closeNav() {
             Chat Rooms
           </div>
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <a href="#"><img src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png" style="height: 34px; width: 34px; margin-right:10px;"class="img-circle">CS374</a>
-            <a href="#"><img src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png" style="height: 34px; width: 34px; margin-right:10px;"class="img-circle">CS375</a>
-            <a href="#"><img src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png" style="height: 34px; width: 34px; margin-right:10px;"class="img-circle">Racoons</a>
-            <a href="#"><img src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png" style="height: 34px; width: 34px; margin-right:10px;"class="img-circle">Contact</a>
+            
     </div>
           
               
@@ -59,5 +56,41 @@ function closeNav() {
     </div>
 
 </body>
+<script>
 
+
+$(document).ready(function() {
+    var elements;
+    //add chat memebers
+   
+    $.get("/chat/get/enter/roomlist", function(roomlist) {
+        for(var i=0;i< roomlist.length;i++)
+        {
+            document.getElementById("mySidenav").innerHTML = document.getElementById("mySidenav").innerHTML+ '<a onclick="redirectroom('+roomlist[i]+')"><img src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png" style="height: 34px; width: 34px; margin-right:10px;"class="img-circle">'+roomlist[i]+'</a>';
+        }
+    });
+    for(var i=0; i< 2;i++)
+    {
+        elements = '<li class="chatmembox"><img class="chat-img2 img-circle" alt="User Avatar"  src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png"> &nbsp me &nbsp&nbsp <i class = "fa fa-thumbs-up"></i> &nbsp<i class = "fa fa-thumbs-down"></i></li>';
+        $("#chatmember").append(elements);
+    }
+
+    $(".mytext").on("keyup", function(e){
+
+        if ((e.keyCode || e.which) == 13){
+            myfunction();
+         document.getElementById('mytext').value = "";
+        }
+    });
+    //add chatroom list
+    
+   
+});
+    function redirectroom(roomname)
+{
+    $.post('/chat/enter', {roomName: roomname, username:'leesh6796'}, function(res) {
+        location.href = res;
+    });
+}
+</script>
 </html>
