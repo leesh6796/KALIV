@@ -2,6 +2,7 @@ var socketio = require('socket.io');
 var User = require('./model').user;
 var ChatRoom = require('./model').chatRoom;
 var Message = require('./model').message;
+var Calendar = require('./model').calendar;
 var _ = require('underscore');
 
 /*
@@ -77,8 +78,14 @@ function init(server)
 					timestamp: foundMessages[i].timestamp
 				});
 			}
-
 			socket.emit('load_message', messages);
+
+			// 캘린더 채팅방이면, 이벤트들을 보내준다.
+			if(room.type === 1)
+			{
+				let cal = await Calendar.findOne({roomID: roomID});
+				socket.emit('load_event', cal.eventList);
+			}
 
 			console.log(clients);
 		});
