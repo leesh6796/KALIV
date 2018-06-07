@@ -1,6 +1,14 @@
 @charset "utf-8";
 /* CSS Document */
 
+#transb{
+  background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
 .chatroom{
   overflow-y: auto;
 }
