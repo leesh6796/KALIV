@@ -1,5 +1,16 @@
-$(document).ready(function() {
-  // page is ready
+var nickname="";
+var username="";
+var roomID="";
+var socket = io();
+$.get('/chat/get/my/name', function(res) {
+              //console.log(res);
+            username = res.username;
+            nickname = res.nickname;
+            roomID = location.href.split('/')[4];
+
+        
+    });
+$(function() {
       $('#calendar').fullCalendar({
       // emphasizes business hours
 
@@ -18,17 +29,21 @@ customButtons: {
           var dateEnd = prompt('Enter a end date in YYYY-MM-DD format');
           var dateS = moment(dateStart);
           var dateE = moment(dateEnd);
-
+          var eventid = eventname+dateS;
           if (dateS.isValid() && dateE.isValid()) {
-            $('#calendar').fullCalendar('renderEvent', {
-              id: eventname+dateS,
+            $('#calendar').fullCalendar('renderEvents', {
+              id: eventid,
               title: eventname,
               start: dateS,
               end: dateE,
-              allDay:true
+              allDay: true
+              
 
             
             });
+            
+            var event ={nickname: nickname, roomID: roomID, eventId: eventid, eventName: eventname, startDate: dateS, endDate:dateE, allDay:true}
+            socket.emit('new_event',event)
 
             alert('Great. Now, update your database...');
           } else {
@@ -49,11 +64,13 @@ customButtons: {
     if(remove)
     {
       $('#calendar').fullCalendar('removeEvents', calEvent._id);
+      var event ={nickname: nickname, roomID: roomID, eventId: calEvent._id};
+      socket.emit('remove_event',event)
     }
 
   }
     
-  })
+  });
       var elements;
     //add chat memebers
    
@@ -76,4 +93,5 @@ customButtons: {
          document.getElementById('mytext').value = "";
         }
     });
-});
+  });
+
