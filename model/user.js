@@ -13,7 +13,6 @@ var userSchema = new Schema({
     enterChatRoomList: [{type: Schema.Types.ObjectId, ref: 'chatRoom'}],
     profilePictureURL: {type: String, default: ""},
     hateIndex: {type: Number, default: 0},
-    blockIndex: {type: Number, default: 0},
 });
 
 userSchema.methods = {

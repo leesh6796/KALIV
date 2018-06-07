@@ -48,8 +48,10 @@ function init(server)
 			let room = await ChatRoom.findOne({_id: roomID});
 			roomName = room.name;
 
-			socket.emit('room_name', roomName);
+			// 채팅방 이름을 보내준다.
+			socket.emit('room_name', {roomName: roomName});
 
+			// 접속자 목록을 보내준다.
 			let userList = room.userList;
 			let members = [];
 			for(i=0; i<userList.length; i++)
@@ -59,6 +61,7 @@ function init(server)
 			}
 			socket.emit('chat_member_change', {type:'update', chatroom: roomID, members: members});
 
+			// 채팅방의 기존 메세지들을 보내준다.
 			let foundMessages = await Message.getMessages(roomID, 0);
 			let messages = [];
 
