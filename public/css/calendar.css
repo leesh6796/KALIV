@@ -24,8 +24,9 @@
     overflow: hidden;
     outline:none;
 }
-.chatroom{
-  overflow-y: auto;
+#chatroom{
+  height:300px;
+  overflow:scroll;
 }
 .chat_time{
   color:gray;
