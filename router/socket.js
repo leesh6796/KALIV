@@ -183,6 +183,28 @@ function init(server)
 				}
 			});
 		});
+
+		socket.on('add_ignore', async function(params)
+		{
+			let roomID = params.roomID;
+			let username = params.username;
+			let targetNick = params.targetNick;
+			let targetID = await User.getUserIDbyNick(targetNick);
+
+			let me = await User.findOne({username: username});
+			me.addIgnore(targetID);
+		});
+
+		socket.on('remove_ignore', async function(params)
+		{
+			let roomID = params.roomID;
+			let username = params.username;
+			let targetNick = params.targetNick;
+			let targetID = await User.getUserIDbyNick(targetNick);
+
+			let me = await User.findOne({username: username});
+			me.removeIgnore(targetID);
+		});
 	});
 
 	return io;

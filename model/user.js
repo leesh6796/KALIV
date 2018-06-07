@@ -12,7 +12,7 @@ var userSchema = new Schema({
     signupDate: { type: Date, default: Date.now },
     enterChatRoomList: [{type: Schema.Types.ObjectId, ref: 'chatRoom'}],
     profilePictureURL: {type: String, default: ""},
-    hateIndex: {type: Number, default: 0},
+    ignoreList: [{type: Schema.Types.ObjectId}],
 });
 
 userSchema.methods = {
@@ -38,6 +38,18 @@ userSchema.methods = {
         this.enterChatRoomList.pull(roomID);
         await this.save();
     },
+
+    addIgnore: async function(userID)
+    {
+        this.ignoreList.push(new mongoose.Types.ObjectId(userID));
+        await this.save();
+    },
+
+    removeIgnore: async function(userID)
+    {
+        this.ignoreList.pull(userID);
+        await this.save();
+    }
 };
 
 userSchema.statics = {
@@ -124,6 +136,16 @@ userSchema.statics = {
         {
             console.log(err);
         }
+    },
+
+    getUserIDbyNick : async function(nickname)
+    {
+        let user = await this.findOne({nickname: nickname});
+        if(user !== null)
+        {
+            return user._id;
+        }
+        return '';
     },
 };
 
