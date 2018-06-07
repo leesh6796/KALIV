@@ -128,24 +128,47 @@ header: {
 },
 customButtons: {
       addEventButton: {
-        text: 'add event...',
+        text: 'add event',
         click: function() {
-          var dateStr = prompt('Enter a date in YYYY-MM-DD format');
-          var date = moment(dateStr);
+          var eventname = prompt('Enter a event name');
+          var dateStart = prompt('Enter a start date in YYYY-MM-DD format');
+          var dateEnd = prompt('Enter a end date in YYYY-MM-DD format');
+          var dateS = moment(dateStart);
+          var dateE = moment(dateEnd);
 
-          if (date.isValid()) {
+          if (dateS.isValid() && dateE.isValid()) {
             $('#calendar').fullCalendar('renderEvent', {
-              title: 'dynamic event',
-              start: date,
-              allDay: true
+              id: eventname+dateS,
+              title: eventname,
+              start: dateS,
+              end: dateE,
+              allDay:true
+
+            
             });
+
             alert('Great. Now, update your database...');
           } else {
             alert('Invalid date.');
           }
         }
       }
+    },
+    eventClick: function(calEvent, jsEvent, view) {
+
+    /*alert('Event: ' + calEvent.title);
+    alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+    alert('View: ' + view.name);
+
+    // change the border color just for fun
+    $(this).css('border-color', 'red');*/
+    var remove = confirm("Do you want to remove?");
+    if(remove)
+    {
+      $('#calendar').fullCalendar('removeEvents', calEvent._id);
     }
+
+  }
     
   })
       var elements;
@@ -173,6 +196,7 @@ customButtons: {
 });
 
  
+
 
 
 
