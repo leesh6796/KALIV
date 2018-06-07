@@ -202,8 +202,8 @@ function init(server)
 			let roomID = params.roomID;
 			let eventID = params.eventID;
 
-			let calendar = await Calendar.findOne({roomID: roomID});
-			calendar.removeEvent(eventID, eventName, startDate, endDate, memo);
+			let cal = await Calendar.findOne({roomID: roomID});
+			cal.removeEvent(eventID);
 
 			_.each(clients[roomID], (member) => {
 				if(member.nickname !== nickname)

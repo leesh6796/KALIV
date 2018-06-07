@@ -30,8 +30,10 @@ calendarSchema.methods = {
 	},
 	removeEvent: async function(eventID)
 	{
-		this.eventList.pull({eventID: eventID});
+		console.log(eventID);
+		this.update({eventList.$.eventID: eventID}, {$pull : {eventList : {eventID: eventID}}});
 		await this.save();
+		console.log(this.eventList);
 	}
 };
 
