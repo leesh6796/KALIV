@@ -59,7 +59,7 @@ $(document).ready(function() {
     });
 
     socket.on('room_name', function(params) {
-        let roomName = params;
+        let roomName = params.roomName;
         roomname = roomName;
         console.log(roomname);
         document.getElementById("chatroomname").innerHTML = roomname;
