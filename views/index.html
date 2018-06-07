@@ -51,7 +51,7 @@ $(document).ready(function() {
     $.get("/chat/get/enter/roomlist", function(roomlist) {
         for(var i=0;i< roomlist.length;i++)
         {
-            document.getElementById("mySidenav").innerHTML = document.getElementById("mySidenav").innerHTML+ '<a onclick="redirectroom('+roomlist[i]+')"><img src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png" style="height: 34px; width: 34px; margin-right:10px;"class="img-circle">'+roomlist[i]+'</a>';
+            document.getElementById("mySidenav").innerHTML = document.getElementById("mySidenav").innerHTML + '<a onclick=\"redirectroom(\''+roomlist[i]+ '\')\"><img src=\"https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png\" style=\"height: 34px; width: 34px; margin-right:10px;\" class=\"img-circle\">' + roomlist[i] + '</a>';
         }
     });
    
@@ -79,6 +79,17 @@ function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
     document.getElementById("main").style.marginLeft = "0";
 
+}
+
+
+function redirectroom(roomname)
+{
+    $.get('/chat/get/my/username', function(res) {
+        let username = res;
+        $.post('/chat/enter', {roomName: roomname, username:username}, function(res) {
+            location.href = res;
+        });
+    });
 }
 
 function redirectRoom()
