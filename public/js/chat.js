@@ -36,8 +36,10 @@ $(document).ready(function() {
     
     // 채팅방 세팅
     $.get('/chat/get/my/name', function(res) {
+        console.log(res);
         username = res.username;
         nickname = res.nickname;
+        console.log(nickname);
         roomID = location.href.split('/')[4];
 
         socket.emit('join', {roomID: roomID, username: username});
@@ -61,6 +63,7 @@ $(document).ready(function() {
     socket.on('new_message', function(params) {
         console.log(params);
         let sender = params.nickname;
+        console.log(sender);
         let text = params.text;
 
         messageList.push(params);
@@ -123,9 +126,10 @@ function insertChat(who, text, time){
     var date = formatAMPM(new Date());
     
     if (who == "me"){
-        control = '<li  class="left clearfix admin_chat">' +
+        
+            control = '<li  class="left clearfix admin_chat">' +
                         
-                        '<span class="chat-img1 pull-right"><img class="img-circle" alt="User Avatar"  src="'+ me.avatar +'" />'+'<div style="text-align:center;">'+me.username+'</div></span>' 
+                        '<span class="chat-img1 pull-right"><img class="img-circle" alt="User Avatar"  src="'+ me.avatar +'" />'+'<div style="text-align:center;">'+nickname+'</div></span>' 
                         +
                             '<div class="bubble you clearfix">' +
                                 '<p >'+ text +'</p>' +
@@ -133,11 +137,12 @@ function insertChat(who, text, time){
                         
                             '</div>'+
 
-                    '</li>';                    
+                    '</li>'; 
+                                     
     }else{
         control = '<li class="left clearfix admin_chat">' +
                         
-                        '<span class="chat-img1 pull-left"><img class="img-circle" alt="User Avatar" src="'+ you.avatar +'" /></span>' +
+                        '<span class="chat-img1 pull-left"><img class="img-circle" alt="User Avatar" src="'+ you.avatar +'" />'+'<div style="text-align:center;">'+who+'</div></span>' +
                             '<div class="bubble me clearfix">' +
                                 '<p>'+ text +'</p>' +
                                 '<div class="chat_time pull-right">'+date+'</div>' +
@@ -147,8 +152,9 @@ function insertChat(who, text, time){
     }
     setTimeout(
         function(){ 
-            var element = document.getElementById("chatroom");                       
-            $("#chatroom").append(control).animate({scrollTop : element.scrollHeight });
+            var element = document.getElementById("chatroom"); 
+            $("#chatroom").scrollTop(element.scrollHeight);                      
+            $("#chatroom").append(control);//.animate({scrollTop : element.scrollHeight });
 
             
         }, time);
