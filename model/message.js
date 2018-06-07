@@ -19,7 +19,7 @@ var messageSchema = new Schema({
 });
 
 messageSchema.statics = {
-    addTextMessage: async function(sender, roomID, sentDate, message)
+    addTextMessage: async function(sender, roomID, sentDate, message) // sender는 userID
     {
         let newMessage = new this({
             sender: sender,
@@ -31,9 +31,33 @@ messageSchema.statics = {
         await newMessage.save();
     },
 
-    getMessages: async function(skip, count) // skip개 건너뛰고 count개 가져온다.
+    /*getMessages: async function(roomID, page) // page=1부터 시작. page * 100개씩 가져온다.
     {
+        const perPage = 100;
+        let docCount = await this.count({});
+        let skip = docCount - page * perPage;
+        let N = perPage;
 
+        if(skip < 0) // 100개보다 적게 남으면
+        {
+            N = perPage + skip;
+            skip = 0;
+        }
+
+        let messages = await this.find({chatRoom: roomID}).skip(skip).limit(N);
+        return messages;
+    },*/
+
+    getMessages: async function(roomID, nowCount) // 현재 가지고 있는 메세지 개수를 변수로 받는다.
+    {
+        // 전체 메세지가 115개고, 100개를 가지고 있으면, 앞에 15개만 보여주는 식
+        let docCount = await this.count({});
+        const perPage = 100;
+        let skip = (docCount - nowCount) < 100 ? 0 : (docCount - nowCount - 100);
+        let N = (docCount - nowCount) < 100 ? (docCount - nowCount) : perPage;
+
+        let messages = await this.find({chatRoom: roomID}).skip(skip).limit(N);
+        return messages;
     },
 };
 
