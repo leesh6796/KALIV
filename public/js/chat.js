@@ -98,8 +98,6 @@ $(document).ready(function() {
         else if(type === 'update') // 채팅방 처음 접속했을 때 참여자 목록 받기
         {
             let members = params.members;
-            console.log(members);
-
         }
     });
 });

@@ -4,8 +4,9 @@ var _ = require('underscore');
 
 
 var calendarSchema = new Schema({
-	parentRoom: {type: Schema.Types.ObjectId, ref: 'chatRoom'},
+	roomID: {type: Schema.Types.ObjectId, ref: 'chatRoom'},
    	eventList: [{
+   		_id: {type: Schema.Types.ObjectId},
    		name: {type: String},
    		startDate: {type: String},
    		endDate: {type: String},
