@@ -218,7 +218,6 @@ function sendMessage()
     let text = $('#mytext').val();
     if(text !== '\n' && text !== '')
     {
-        console.log('전송');
         let params = {username:username, roomID: roomID, message:text};
         socket.emit('new_message', params);
 
