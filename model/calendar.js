@@ -15,13 +15,14 @@ var calendarSchema = new Schema({
 });
 
 calendarSchema.methods = {
-	addEvent: async function(eventID, name, startDate, endDate)
+	addEvent: async function(eventID, name, startDate, endDate, allDay)
 	{
 		let newEvent = {
 			eventID: eventID,
 			name: name,
 			startDate: startDate,
 			endDate: endDate,
+			allDay: allDay
 		};
 
 		this.eventList.push(newEvent);
