@@ -114,7 +114,9 @@ $(document).ready(function() {
             makememberlist();
         }
     });
-
+    socket.on('load_event', function(params) {
+      console.log(params);
+    });
     $('#calendar').fullCalendar({
       // emphasizes business hours
 
@@ -148,7 +150,7 @@ customButtons: {
             
             var event ={nickname: nickname, roomID: roomID, eventId: eventid, eventName: eventname, startDate: dateS, endDate:dateE, allDay:true}
             socket.emit('new_event',event)
-
+            console.log(event);
             alert('Great. Now, update your database...');
           } else {
             alert('Invalid date.');
