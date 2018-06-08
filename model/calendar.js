@@ -4,8 +4,6 @@ var _ = require('underscore');
 
 
 var calendarSchema = new Schema({
-	_id: {type: Schema.Types.ObjectId},
-	roomID: {type: Schema.Types.ObjectId, ref: 'chatRoom'},
    	eventList: [{
    		eventID: {type: String},
    		name: {type: String},
@@ -13,6 +11,7 @@ var calendarSchema = new Schema({
    		endDate: {type: String},
    		allDay: {type: Boolean},
    	}],
+   	roomID: {type: Schema.Types.ObjectId, ref: 'chatRoom'},
 });
 
 calendarSchema.methods = {

@@ -46,9 +46,29 @@ $(document).ready(function() {
         location.href = '/';
     });
 
+    socket.on('load_message', function(params) {
+        let messages = params;
+
+        messageList = messages;
+        messageCount = messageList.length;
+
+        resetChat();
+        let i;
+        for(i=0; i<messageList.length; i++)
+        {
+            let msg = messageList[i];
+            let sender = msg.nickname === nickname ? "me" : msg.nickname;
+            insertChat(sender, msg.text, 0, true);
+        }
+
+        var element = document.getElementById("chatroom");
+        $("#chatroom").scrollTop(element.scrollHeight);
+
+        makememberlist();
+    });
+
     socket.on('load_ignore', function(params) {
         ignoreList = params;
-        makememberlist();
 
         let i;
         for(i=0; i<messageList.length; i++)
@@ -60,27 +80,8 @@ $(document).ready(function() {
 
         var element = document.getElementById("chatroom");
         $("#chatroom").scrollTop(element.scrollHeight);
-    });
 
-    socket.on('load_message', function(params) {
-        let messages = params;
-
-        messageList = messages;
-        messageCount = messageList.length;
-
-        if(ignoreList.length === 0)
-        {
-            let i;
-            for(i=0; i<messageList.length; i++)
-            {
-                let msg = messageList[i];
-                let sender = msg.nickname === nickname ? "me" : msg.nickname;
-                insertChat(sender, msg.text, 0, true);
-            }
-
-            var element = document.getElementById("chatroom");
-            $("#chatroom").scrollTop(element.scrollHeight);
-        }
+        makememberlist();
     });
 
     socket.on('room_name', function(params) {
