@@ -6,6 +6,7 @@ var socket = io();
 var username = '';
 var nickname = '';
 var roomID = '';
+var ignoreList = [];
 var messageList = []; // json List
 var messageCount = 0; // json Count
 var memberset = [];
@@ -45,11 +46,9 @@ $(document).ready(function() {
         location.href = '/';
     });
 
-    socket.on('load_message', function(params) {
-        let messages = params;
-
-        messageList = messages;
-        messageCount = messageList.length;
+    socket.on('load_ignore', function(params) {
+        ignoreList = params;
+        makememberlist();
 
         let i;
         for(i=0; i<messageList.length; i++)
@@ -61,6 +60,27 @@ $(document).ready(function() {
 
         var element = document.getElementById("chatroom");
         $("#chatroom").scrollTop(element.scrollHeight);
+    });
+
+    socket.on('load_message', function(params) {
+        let messages = params;
+
+        messageList = messages;
+        messageCount = messageList.length;
+
+        if(ignoreList.length === 0)
+        {
+            let i;
+            for(i=0; i<messageList.length; i++)
+            {
+                let msg = messageList[i];
+                let sender = msg.nickname === nickname ? "me" : msg.nickname;
+                insertChat(sender, msg.text, 0, true);
+            }
+
+            var element = document.getElementById("chatroom");
+            $("#chatroom").scrollTop(element.scrollHeight);
+        }
     });
 
     socket.on('room_name', function(params) {
@@ -84,7 +104,8 @@ $(document).ready(function() {
         }
         else
         {
-            insertChat(sender, text, 0,false);
+            if(ignoreList.indexOf(sender) < 0)
+                insertChat(sender, text, 0,false);
         }
     });
 
@@ -233,7 +254,20 @@ function makememberlist()
     $('#chatmember').empty();
     for(var i=0; i< memberset.length;i++)
     {
-        elements = '<li class="chatmembox"><img class="chat-img2 img-circle" alt="User Avatar"  src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png"> &nbsp'+ memberset[i]+'&nbsp&nbsp <i class = "fa fa-thumbs-up"></i> &nbsp<i class = "fa fa-thumbs-down"></i></li>';
+        elements = '<li class="chatmembox"><img class="chat-img2 img-circle" alt="User Avatar"  src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png"> &nbsp'+ memberset[i]+'&nbsp&nbsp';// <i class = "fa fa-ban"></i></li>';
+        if(memberset[i] !== nickname)
+        {
+            if(ignoreList.indexOf(memberset[i]) < 0)
+            {
+                elements += '<button onclick="banUser(\'' + memberset[i] + '\')">ban</button>';
+            }
+            else
+            {
+                elements += '<button onclick="cancelBanUser(\'' + memberset[i] + '\')">cancel ban</button>';
+            }
+        }
+        
+        elements += '</li>';
         $("#chatmember").append(elements);
     }
 }
@@ -244,6 +278,20 @@ me.username="me";
 var you = {};
 you.avatar = "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png";
 you.username="you";
+
+function banUser(nickname)
+{
+    ignoreList.push(nickname);
+    socket.emit('add_ignore', {roomID: roomID, username: username, targetNick: nickname});
+    makememberlist();
+}
+
+function cancelBanUser(nickname)
+{
+    ignoreList.slice(ignoreList.indexOf(nickname), 1);
+    socket.emit('remove_ignore', {roomID: roomID, username: username, targetNick: nickname});
+    makememberlist();
+}
 
 function enter(name)
 {

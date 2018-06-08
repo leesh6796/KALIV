@@ -1,3 +1,4 @@
+var mongoose = require('mongoose');
 var User = require('./model').user;
 var ChatRoom = require('./model').chatRoom;
 var Calendar = require('./model').calendar;
@@ -12,9 +13,10 @@ module.exports = {
 		if(found === null)
 		{
 			var newCalendar = new Calendar();
+			console.log("TESt : %s", roomID);
 			newCalendar.roomID = roomID;
 			newCalendar.eventList = [];
-			newCalendar.save();
+			await newCalendar.save();
 
 			ChatRoom.findOne({_id: roomID})
 				.then((room) => {

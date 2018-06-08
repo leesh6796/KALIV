@@ -19,6 +19,7 @@ module.exports = {
 		user.password = password;
 		user.nickname = nickname;
 		user.verifyToken = token;
+		user.ignoreList = [];
 
 		await user.save((err) => {
 			if(err)
@@ -50,7 +51,7 @@ module.exports = {
 		    maxMessages:10*/
 		}) );
 
-		let url = global.dev ? "http://localhost:10500/signup/verify/" + token : "";
+		let url = global.dev ? "http://143.248.196.89:10500/signup/verify/" + token : "";
 		var mailOptions = {
 		    from: 'KALIV <kaliv.kaist@gmail.com>',
 		    to: email,

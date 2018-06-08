@@ -63,6 +63,21 @@ function init(server)
 			}
 			socket.emit('chat_member_change', {type:'update', chatroom: roomID, members: members});
 
+			// ignore list를 보내준다.
+			let ignoreList = await User.getIgnoreList(username);
+			let ignores = []
+
+			for(i=0; i<ignoreList.length; i++)
+			{
+				let targetID = ignoreList[i];
+				let targetNick = await User.getNicknameById(targetID);
+
+				ignores.push(targetNick);
+			}
+			console.log(ignores);
+			socket.emit('load_ignore', ignores);
+
+
 			// 채팅방의 기존 메세지들을 보내준다.
 			let foundMessages = await Message.getMessages(roomID, 0);
 			let messages = [];
@@ -84,21 +99,8 @@ function init(server)
 			if(room.type === 1)
 			{
 				let cal = await Calendar.findOne({roomID: roomID});
-				if(cal.eventList.length > 0) socket.emit('load_event', cal.eventList);
+				if(cal !== null) socket.emit('load_event', cal.eventList);
 			}
-
-			// ignore list를 보내준다.
-			let ignoreList = await User.getIgnoreList(username);
-			let ignores = []
-
-			for(i=0; i<ignoreList.length; i++)
-			{
-				let targetID = ignoreList[i];
-				let targetNick = await User.getNicknameById(targetID);
-
-				ignores.push(targetNick);
-			}
-			socket.emit('load_ignore', ignores);
 
 			console.log(clients);
 		});
@@ -224,7 +226,7 @@ function init(server)
 			let targetID = await User.getUserIDbyNick(targetNick);
 
 			let me = await User.findOne({username: username});
-			me.addIgnore(targetID);
+			if(me.ignoreList.indexOf(targetID) < 0) me.addIgnore(targetID);
 		});
 
 		socket.on('remove_ignore', async function(params)
