@@ -132,7 +132,21 @@ $(document).ready(function() {
             });
       }
     });
-    
+    socket.on('remove_event', function(params) {
+      $('#calendar').fullCalendar('removeEvents', params.eventID);
+    });
+    socket.on('new_event', function(params) {
+      $('#calendar').fullCalendar('renderEvent', {
+              id: params.eventID,
+              title: params.eventName,
+              start: params.startDate,
+              end: params.endDate,
+              allDay: true
+              
+
+            
+            });
+    });
     $('#calendar').fullCalendar({
       // emphasizes business hours
 
