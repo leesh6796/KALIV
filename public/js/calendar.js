@@ -150,7 +150,7 @@ customButtons: {
           var dateStart = prompt('Enter a start date in YYYY-MM-DD format');
           var dateEnd = prompt('Enter a end date in YYYY-MM-DD format');
           var dateS = moment(dateStart);
-          var dateE = moment(dateEnd).add(24, 'hours')
+          var dateE = moment(dateEnd).add(24, 'hours');
           var eventid = eventname+dateS;
           if (dateS.isValid() && dateE.isValid()) {
             $('#calendar').fullCalendar('renderEvent', {
@@ -163,7 +163,8 @@ customButtons: {
 
             
             });
-            
+            dateS.add(24, 'hours');
+            dateE.add(24, 'hours');
             var event ={nickname: nickname, roomID: roomID, eventID: eventid, eventName: eventname, startDate: dateS, endDate:dateE, allDay:true}
             socket.emit('new_event',event);
             //alert('Great. Now, update your database...');

@@ -164,6 +164,7 @@ function init(server)
 
 		socket.on('new_event', async function(params)
 		{
+			//console.log(params);
 			let nickname = params.nickname;
 			let roomID = params.roomID;
 			let eventID = params.eventID;
