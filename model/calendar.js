@@ -37,7 +37,6 @@ calendarSchema.methods = {
 		//this.eventList.pull({eventID: eventID});
 
 		await this.save();
-		console.log(this.eventList);
 	}
 };
 
